@@ -4,11 +4,25 @@ local tileSize = 32
 local tileset
 local tileQuads = {}
 local tileData = {
-    { 1, 1, 1, 1, 1 },
-    { 1, 0, 0, 0, 1 },
-    { 1, 0, 0, 0, 1 },
-    { 1, 0, 0, 0, 1 },
-    { 1, 1, 1, 1, 1 }
+    { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 2, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 2, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 2, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 2, 2, 0, 0, 0, 0 },
+    { 2, 0, 0, 0, 0, 2, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }
+}
+local solidTiles = {
+    [0] = false, -- Empty tile
+    [1] = true,  -- Solid tile
+    [2] = true   -- Solid tile
 }
 
 function Map.load()
@@ -36,6 +50,13 @@ function Map.draw()
             end
         end
     end
+end
+
+function Map.isSolid(worldX, worldY)
+    local col = math.floor(worldX / tileSize) + 1
+    local row = math.floor(worldY / tileSize) + 1
+    local tile = tileData[row] and tileData[row][col]
+    return solidTiles[tile or 0] or false
 end
 
 return Map
