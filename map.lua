@@ -4,8 +4,8 @@ local tileSize = 32
 local tileset
 local tileQuads = {}
 local tileData = {
-    { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+    { 13, 14, 14, 14, 14, 14, 14, 14, 14, 15 },
+    { 16, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
     { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
     { 2, 0, 0, 0, 2, 0, 0, 0, 0, 2 },
@@ -20,9 +20,10 @@ local tileData = {
     { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }
 }
 local solidTiles = {
-    [0] = false, -- Empty tile
-    [1] = true,  -- Solid tile
-    [2] = true   -- Solid tile
+    [0] = false,
+    [17] = false, -- Empty tile
+    [13] = true,  -- Solid tile
+    [14] = true   -- Solid tile
 }
 
 function Map.load()
