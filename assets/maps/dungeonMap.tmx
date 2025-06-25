@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="15">
+ <editorsettings>
+  <export target="../../../GameJam Restart/map/dungeon.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="full tilemap" tilewidth="32" tileheight="32" tilecount="72" columns="9">
+  <image source="../../../../../Downloads/v1.1 dungeon crawler 16X16 pixel pack/v1.1 dungeon crawler 16X16 pixel pack/full tilemap.png" width="288" height="256"/>
+  <tile id="39">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="16" width="8" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="40">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="24" y="16" width="8" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="42">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="43">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="44">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="48">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="8" height="32"/>
+   </objectgroup>
+  </tile>
+  <tile id="49">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="24" y="0" width="8" height="32"/>
+   </objectgroup>
+  </tile>
+  <tile id="51">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="52">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="53">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="55">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="24" width="32" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="56">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="24" width="32" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="57">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="8" height="32"/>
+   </objectgroup>
+  </tile>
+  <tile id="58">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="24" y="0" width="8" height="32"/>
+   </objectgroup>
+  </tile>
+  <tile id="59">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="24" width="32" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="64">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="8" height="32"/>
+    <object id="3" x="8" y="24" width="24" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="65">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="24" width="32" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="68">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="24" width="32" height="8"/>
+    <object id="2" x="24" y="0" width="8" height="24"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <layer id="2" name="Floor" width="16" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,44,52,45,44,44,45,54,44,52,43,52,52,45,43,0,
+0,23,23,23,31,31,22,12,22,12,21,21,21,23,13,0,
+0,23,23,44,44,45,54,43,30,31,21,12,31,12,32,0,
+0,32,21,23,23,23,12,22,30,32,12,13,21,23,12,0,
+0,30,22,29,30,12,30,22,12,21,31,21,12,22,12,0,
+0,32,12,43,43,43,32,44,32,21,23,30,13,32,23,0,
+0,29,12,30,22,13,23,21,13,12,31,23,32,12,31,0
+</data>
+ </layer>
+ <layer id="1" name="Walls" width="16" height="8">
+  <data encoding="csv">
+41,66,66,66,66,66,66,66,66,66,66,66,66,66,66,40,
+50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,
+50,0,0,66,66,66,66,66,0,0,0,0,0,0,0,49,
+50,0,0,49,0,0,0,50,0,0,0,0,0,0,0,49,
+50,0,0,49,0,0,0,50,0,0,0,0,0,0,0,49,
+50,0,0,65,57,57,0,69,0,0,0,0,0,0,0,49,
+50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,
+59,60,60,60,60,60,60,60,60,60,60,60,60,60,60,58
+</data>
+ </layer>
+ <layer id="3" name="Decoration" width="16" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,4,5,0,0,0,0,14,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,10,11,0,0,
+0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,
+0,0,0,0,10,11,0,0,0,0,0,0,10,11,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,10,11,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="collision">
+  <properties>
+   <property name="collidable" value="true"/>
+  </properties>
+  <object id="1" x="24" y="16" width="464" height="32"/>
+  <object id="2" x="24" y="48" width="8" height="208"/>
+  <object id="3" x="32" y="248" width="448" height="8"/>
+  <object id="4" x="480" y="48" width="8" height="208"/>
+  <object id="5" x="384" y="64" width="64" height="16"/>
+  <object id="6" x="384" y="128" width="64" height="16"/>
+  <object id="7" x="384" y="192" width="64" height="16"/>
+  <object id="8" x="96" y="184" width="96" height="24"/>
+  <object id="9" x="224" y="184" width="32" height="24"/>
+  <object id="10" x="248" y="96" width="8" height="88"/>
+  <object id="11" x="96" y="96" width="8" height="88"/>
+  <object id="12" x="104" y="96" width="144" height="16"/>
+  <object id="13" x="128" y="128" width="64" height="24"/>
+ </objectgroup>
+</map>

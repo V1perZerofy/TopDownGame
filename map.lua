@@ -1,59 +1,41 @@
+-- Map module: loads a Tiled .lua map via STI and draws layers in order
+local sti = require("libs.sti")
+
 local Map = {}
+local layersDrawOrder = { "Floor", "Walls", "Decoration" }
 
-local tileSize = 32
-local tileset
-local tileQuads = {}
-local tileData = {
-    {13, 14, 14, 14, 14, 14, 14, 14, 14, 13}, -- Top row (corners and top edge)
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14}, -- Second row (left/right edges)
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {14, 17, 17, 17, 17, 17, 17, 17, 17, 14},
-    {13, 14, 14, 14, 14, 14, 14, 14, 14, 13}  -- Bottom row (corners and bottom edge)
-}
-local solidTiles = {
-    [0] = false,
-    [17] = false, -- Empty tile
-    [13] = true,  -- Solid tile
-    [14] = true   -- Solid tile
-}
-
-function Map.load()
-    tileset = love.graphics.newImage("assets/tiles/tiles.png")
-    local cols = tileset:getWidth() / tileSize
-    local rows = tileset:getHeight() / tileSize
-
-    for y = 0, rows - 1 do
-        for x = 0, cols - 1 do
-            local id = y * cols + x + 1
-            tileQuads[id] = love.graphics.newQuad(
-                x * tileSize, y * tileSize, tileSize, tileSize,
-                tileset:getDimensions()
-            )
-        end
-    end
+----------------------------------------------------------------
+-- load(mapFile)  : mapFile = path to Tiled Lua export
+----------------------------------------------------------------
+function Map.load(world, mapFile)
+    Map.world = world
+    Map.tiled = sti(mapFile, { "box2d" })
+    Map.tiled:box2d_init(world)        -- create static wall bodies
 end
 
+----------------------------------------------------------------
+function Map.update(dt)
+    if Map.tiled then Map.tiled:update(dt) end
+end
+
+----------------------------------------------------------------
 function Map.draw()
-    for y = 1, #tileData do
-        for x = 1, #tileData[y] do
-            local id = tileData[y][x]
-            if tileQuads[id] then
-                love.graphics.draw(tileset, tileQuads[id], (x - 1) * tileSize, (y - 1) * tileSize)
-            end
+    if not Map.tiled then return end
+    for _, name in ipairs(layersDrawOrder) do
+        local layer = Map.tiled.layers[name]
+        if layer then
+            Map.tiled:drawLayer(layer)
         end
     end
 end
 
-function Map.isSolid(worldX, worldY)
-    local col = math.floor(worldX / tileSize) + 1
-    local row = math.floor(worldY / tileSize) + 1
-    local tile = tileData[row] and tileData[row][col]
-    return solidTiles[tile or 0] or false
+-- Draw a single named layer
+function Map.drawLayer(name)
+    if not Map.tiled then return end
+    local layer = Map.tiled.layers[name]
+    if layer then
+        Map.tiled:drawLayer(layer)
+    end
 end
 
 return Map

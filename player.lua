@@ -1,85 +1,82 @@
 local Player = {}
-local Map = require("map") -- only if not already required at the top
+
+-- animation config
+local FRAME_W, FRAME_H = 32, 32
+local FRAMES_TOTAL     = 4
+local FRAME_TIME       = 0.12
+
+-- runtime
+local sprite, quads = {}, {}
+local currentFrame, frameTimer = 1, 0
+
+-- physics handles
+local body
 
 
-Player.x = 64
-Player.y = 64
-Player.speed = 150
-
-local spriteSheet
-local quads = {}
-local frameWidth = 32
-local frameHeight = 32
-local currentFrame = 1
-local frameTimer = 0
-local frameDelay = 0.1
-local totalFrames = 4
-
-function Player.load()
-    spriteSheet = love.graphics.newImage("assets/sprites/player.png")
-    local sheetWidth = spriteSheet:getWidth()
-    Player.width = 32
-    Player.height = 32
-
-
-    for i = 0, (sheetWidth / frameWidth) - 1 do
-        quads[#quads + 1] = love.graphics.newQuad(
-            i * frameWidth, 0,
-            frameWidth, frameHeight,
-            spriteSheet:getDimensions()
+function Player.load(world)
+    -- sprite sheet → quads
+    -- sprite sheet → quads  (horizontal layout: 4 × 32×32 = 128×32)
+    sprite = love.graphics.newImage("assets/sprites/player_left.png") -- 128×32
+    for i = 0, FRAMES_TOTAL - 1 do
+        quads[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,         -- x-offset moves horizontally
+            0,                   -- y-offset stays 0
+            FRAME_W, FRAME_H,    -- frame size
+            sprite:getDimensions()
         )
     end
+
+    local startX, startY = 100, 100    -- later: read from Tiled object
+    body = love.physics.newBody(world, startX, startY, "dynamic")
+    local shape   = love.physics.newRectangleShape(FRAME_W - 4, FRAME_H - 4)
+    local fixture = love.physics.newFixture(body, shape)
+    fixture:setUserData("Player")
 end
 
-local Map = require("map")
-
+-- update player position based on keyboard input
+-- and animate sprite frames
 function Player.update(dt)
-    local dx, dy = 0, 0
-    if love.keyboard.isDown("w") then dy = dy - 1 end
-    if love.keyboard.isDown("s") then dy = dy + 1 end
-    if love.keyboard.isDown("a") then dx = dx - 1 end
-    if love.keyboard.isDown("d") then dx = dx + 1 end
+    local speed = 100
+    local vx, vy = 0, 0
+    if love.keyboard.isDown("w") then vy = vy - 1 end
+    if love.keyboard.isDown("s") then vy = vy + 1 end
+    if love.keyboard.isDown("a") then vx = vx - 1 end
+    if love.keyboard.isDown("d") then vx = vx + 1 end
 
-    local len = math.sqrt(dx * dx + dy * dy)
+
+    local len = math.sqrt(vx*vx + vy*vy)
     if len > 0 then
-        dx = dx / len
-        dy = dy / len
+        vx, vy = vx / len, vy / len
+        body:setLinearVelocity(vx * speed, vy * speed)
 
-        local moveX = dx * Player.speed * dt
-        local moveY = dy * Player.speed * dt
-
-        local nextX = Player.x + moveX
-        local nextY = Player.y + moveY
-
-        local w, h = Player.width or 28, Player.height or 28
-
-        -- Check all 4 corners after X movement
-        local function checkCollisionAt(x, y)
-            return Map.isSolid(x, y)
+        -- advance animation
+        frameTimer = frameTimer + dt
+        if frameTimer >= FRAME_TIME then
+            frameTimer  = frameTimer - FRAME_TIME
+            currentFrame = currentFrame % FRAMES_TOTAL + 1
         end
-
-        local xOK =
-            not checkCollisionAt(nextX, Player.y) and
-            not checkCollisionAt(nextX + w - 1, Player.y) and
-            not checkCollisionAt(nextX, Player.y + h - 1) and
-            not checkCollisionAt(nextX + w - 1, Player.y + h - 1)
-
-        if xOK then Player.x = nextX end
-
-        -- Check all 4 corners after Y movement (note: X may have changed above)
-        local yOK =
-            not checkCollisionAt(Player.x, nextY) and
-            not checkCollisionAt(Player.x + w - 1, nextY) and
-            not checkCollisionAt(Player.x, nextY + h - 1) and
-            not checkCollisionAt(Player.x + w - 1, nextY + h - 1)
-
-        if yOK then Player.y = nextY end
+    else
+        body:setLinearVelocity(0, 0)
+        currentFrame, frameTimer = 1, 0
     end
 end
 
-
+-- draw player sprite at body position
 function Player.draw()
-    love.graphics.draw(spriteSheet, quads[currentFrame], Player.x, Player.y)
+    local x, y = body:getPosition()
+    love.graphics.draw(sprite, quads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
 end
+
+-- check if player collides with mapChange object
+function Player.checkMapChange()
+    local fixtures = body:getFixtures()
+    for _, fixture in ipairs(fixtures) do
+        if fixture:getUserData() == "MapChange" then
+            return true
+        end
+    end
+    return false
+end
+
 
 return Player
