@@ -3,10 +3,12 @@ local Player = {}
 -- animation config
 local FRAME_W, FRAME_H = 32, 32
 local FRAMES_TOTAL     = 4
-local FRAME_TIME       = 0.12
+local FRAME_TIME       = 0.1
 
 -- runtime
-local sprite, quads = {}, {}
+local spriteLeft, quadsLeft = {}, {}
+local spriteRight, quadsRight = {}, {}
+local currentSprite, currentQuads
 local currentFrame, frameTimer = 1, 0
 
 -- physics handles
@@ -16,19 +18,32 @@ local body
 function Player.load(world)
     -- sprite sheet → quads
     -- sprite sheet → quads  (horizontal layout: 4 × 32×32 = 128×32)
-    sprite = love.graphics.newImage("assets/sprites/player_left.png") -- 128×32
+    spriteLeft = love.graphics.newImage("assets/sprites/player_left.png") -- 128×32
     for i = 0, FRAMES_TOTAL - 1 do
-        quads[i + 1] = love.graphics.newQuad(
+        quadsLeft[i + 1] = love.graphics.newQuad(
             i * FRAME_W,         -- x-offset moves horizontally
             0,                   -- y-offset stays 0
             FRAME_W, FRAME_H,    -- frame size
-            sprite:getDimensions()
+            spriteLeft:getDimensions()
         )
     end
 
+    spriteRight = love.graphics.newImage("assets/sprites/player_right.png") -- 128×32
+    for i = 0, FRAMES_TOTAL - 1 do
+        quadsRight[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,         -- x-offset moves horizontally
+            0,                   -- y-offset stays 0
+            FRAME_W, FRAME_H,    -- frame size
+            spriteRight:getDimensions()
+        )
+    end
+
+    currentSprite = spriteLeft
+    currentQuads = quadsLeft
+
     local startX, startY = 100, 100    -- later: read from Tiled object
     body = love.physics.newBody(world, startX, startY, "dynamic")
-    local shape   = love.physics.newRectangleShape(FRAME_W - 4, FRAME_H - 4)
+    local shape   = love.physics.newRectangleShape(FRAME_W - 6, FRAME_H - 6)
     local fixture = love.physics.newFixture(body, shape)
     fixture:setUserData("Player")
 end
@@ -38,11 +53,22 @@ end
 function Player.update(dt)
     local speed = 100
     local vx, vy = 0, 0
-    if love.keyboard.isDown("w") then vy = vy - 1 end
-    if love.keyboard.isDown("s") then vy = vy + 1 end
-    if love.keyboard.isDown("a") then vx = vx - 1 end
-    if love.keyboard.isDown("d") then vx = vx + 1 end
-
+    if love.keyboard.isDown("w") then 
+        vy = vy - 1 
+    end
+    if love.keyboard.isDown("s") then 
+        vy = vy + 1
+    end
+    if love.keyboard.isDown("a") then 
+        vx = vx - 1 
+        currentSprite = spriteLeft
+        currentQuads = quadsLeft
+    end
+    if love.keyboard.isDown("d") then 
+        vx = vx + 1 
+        currentSprite = spriteRight
+        currentQuads = quadsRight
+    end
 
     local len = math.sqrt(vx*vx + vy*vy)
     if len > 0 then
@@ -64,7 +90,7 @@ end
 -- draw player sprite at body position
 function Player.draw()
     local x, y = body:getPosition()
-    love.graphics.draw(sprite, quads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
+    love.graphics.draw(currentSprite, currentQuads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
 end
 
 -- check if player collides with mapChange object

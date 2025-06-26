@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="15">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="20">
  <editorsettings>
-  <export target="../../../GameJam Restart/map/dungeon.lua" format="lua"/>
+  <export target="dungeon.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="full tilemap" tilewidth="32" tileheight="32" tilecount="72" columns="9">
   <image source="../../../../../Downloads/v1.1 dungeon crawler 16X16 pixel pack/v1.1 dungeon crawler 16X16 pixel pack/full tilemap.png" width="288" height="256"/>
@@ -101,12 +101,12 @@
  <layer id="2" name="Floor" width="16" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,44,52,45,44,44,45,54,44,52,43,52,52,45,43,0,
+0,52,43,52,54,45,43,44,52,53,44,43,52,53,43,0,
 0,23,23,23,31,31,22,12,22,12,21,21,21,23,13,0,
-0,23,23,44,44,45,54,43,30,31,21,12,31,12,32,0,
+0,23,23,52,54,44,45,52,30,31,21,12,31,12,32,0,
 0,32,21,23,23,23,12,22,30,32,12,13,21,23,12,0,
 0,30,22,29,30,12,30,22,12,21,31,21,12,22,12,0,
-0,32,12,43,43,43,32,44,32,21,23,30,13,32,23,0,
+0,32,12,43,43,53,32,54,32,21,23,30,13,32,23,0,
 0,29,12,30,22,13,23,21,13,12,31,23,32,12,31,0
 </data>
  </layer>
@@ -130,13 +130,13 @@
 0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,
 0,0,0,0,10,11,0,0,0,0,0,0,10,11,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,10,11,0,0,
+0,2,0,0,0,0,0,0,0,0,0,0,10,11,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="4" name="collision">
   <properties>
-   <property name="collidable" value="true"/>
+   <property name="collidable" type="bool" value="true"/>
   </properties>
   <object id="1" x="24" y="16" width="464" height="32"/>
   <object id="2" x="24" y="48" width="8" height="208"/>
@@ -151,5 +151,9 @@
   <object id="11" x="96" y="96" width="8" height="88"/>
   <object id="12" x="104" y="96" width="144" height="16"/>
   <object id="13" x="128" y="128" width="64" height="24"/>
+  <object id="16" x="32" y="192" width="32" height="16"/>
+ </objectgroup>
+ <objectgroup id="5" name="MapChange">
+  <object id="18" x="32" y="224" width="32" height="24"/>
  </objectgroup>
 </map>
