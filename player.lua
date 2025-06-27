@@ -1,9 +1,9 @@
 local Player = {}
 
 -- animation config
-local FRAME_W, FRAME_H = 32, 32
-local FRAMES_TOTAL     = 4
-local FRAME_TIME       = 0.1
+local FRAME_W, FRAME_H = 64, 64
+local FRAMES_TOTAL     = 10
+local FRAME_TIME       = 0.08
 
 -- runtime
 local spriteLeft, quadsLeft = {}, {}
@@ -18,21 +18,21 @@ local body
 function Player.load(world)
     -- sprite sheet → quads
     -- sprite sheet → quads  (horizontal layout: 4 × 32×32 = 128×32)
-    spriteLeft = love.graphics.newImage("assets/sprites/player_left.png") -- 128×32
+    spriteLeft = love.graphics.newImage("assets/sprites/enemies_left.png") -- 128×32
     for i = 0, FRAMES_TOTAL - 1 do
         quadsLeft[i + 1] = love.graphics.newQuad(
             i * FRAME_W,         -- x-offset moves horizontally
-            0,                   -- y-offset stays 0
+            14,                   -- y-offset stays 0
             FRAME_W, FRAME_H,    -- frame size
             spriteLeft:getDimensions()
         )
     end
 
-    spriteRight = love.graphics.newImage("assets/sprites/player_right.png") -- 128×32
+    spriteRight = love.graphics.newImage("assets/sprites/enemies.png") -- 128×32
     for i = 0, FRAMES_TOTAL - 1 do
         quadsRight[i + 1] = love.graphics.newQuad(
             i * FRAME_W,         -- x-offset moves horizontally
-            0,                   -- y-offset stays 0
+            14,                   -- y-offset stays 0
             FRAME_W, FRAME_H,    -- frame size
             spriteRight:getDimensions()
         )
@@ -44,16 +44,16 @@ function Player.load(world)
     local startX, startY = 100, 100    -- later: read from Tiled object
     body = love.physics.newBody(world, startX, startY, "dynamic")
     body:setFixedRotation(true) -- <--- Add this line
-    local shape   = love.physics.newRectangleShape(19, 23)
-    local shapeTruncated = love.physics.newRectangleShape()
-    local fixture = love.physics.newFixture(body, shapeTruncated)
+    local shape   = love.physics.newRectangleShape(25, 23)
+    --local shapeTruncated = love.physics.newRectangleShape()
+    local fixture = love.physics.newFixture(body, shape)
     fixture:setUserData("Player")
 end
 
 -- update player position based on keyboard input
 -- and animate sprite frames
 function Player.update(dt)
-    local speed = 100
+    local speed = 50
     local vx, vy = 0, 0
     if love.keyboard.isDown("w") then 
         vy = vy - 1 

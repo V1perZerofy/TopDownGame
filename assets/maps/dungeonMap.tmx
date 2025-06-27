@@ -4,7 +4,7 @@
   <export target="dungeon.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="full tilemap" tilewidth="32" tileheight="32" tilecount="72" columns="9">
-  <image source="../../../../../Downloads/v1.1 dungeon crawler 16X16 pixel pack/v1.1 dungeon crawler 16X16 pixel pack/full tilemap.png" width="288" height="256"/>
+  <image source="../tiles/full tilemap.png" width="288" height="256"/>
   <tile id="39">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="16" width="8" height="16"/>
@@ -145,13 +145,13 @@
   <object id="5" x="384" y="64" width="64" height="16"/>
   <object id="6" x="384" y="128" width="64" height="16"/>
   <object id="7" x="384" y="192" width="64" height="16"/>
-  <object id="8" x="96" y="184" width="96" height="24"/>
-  <object id="9" x="224" y="184" width="32" height="24"/>
-  <object id="10" x="248" y="96" width="8" height="88"/>
-  <object id="11" x="96" y="96" width="8" height="88"/>
+  <object id="8" x="96" y="192" width="96" height="16"/>
+  <object id="9" x="224" y="192" width="32" height="16"/>
+  <object id="10" x="248" y="96" width="8" height="96"/>
+  <object id="11" x="96" y="96" width="8" height="96"/>
   <object id="12" x="104" y="96" width="144" height="16"/>
   <object id="13" x="128" y="128" width="64" height="24"/>
-  <object id="16" x="32" y="192" width="32" height="16"/>
+  <object id="16" x="40" y="192" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="5" name="MapChange">
   <object id="18" x="32" y="224" width="32" height="24"/>
