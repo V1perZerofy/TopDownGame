@@ -38,4 +38,25 @@ function Map.drawLayer(name)
     end
 end
 
+function Map.debugDraw()
+    if not Map.tiled or not Map.world then return end
+    love.graphics.setColor(0, 1, 0, 0.5) -- green, semi-transparent
+    for _, body in pairs(Map.world:getBodies()) do
+        for _, fixture in pairs(body:getFixtures()) do
+            local shape = fixture:getShape()
+            local bx, by = body:getPosition()
+            love.graphics.push()
+            love.graphics.translate(bx, by)
+            love.graphics.rotate(body:getAngle())
+            if shape:typeOf("PolygonShape") then
+                love.graphics.polygon("line", shape:getPoints())
+            elseif shape:typeOf("CircleShape") then
+                love.graphics.circle("line", 0, 0, shape:getRadius())
+            end
+            love.graphics.pop()
+        end
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+end
+
 return Map

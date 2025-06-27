@@ -35,6 +35,9 @@ function love.draw()
 
     -- Draw Walls and Decoration layers
     Map.drawLayer("Walls")
+
+    Map.debugDraw()  -- draw Box2D bodies for debugging
+    Player.debugDraw()  -- draw player body for debugging
 end
 
 function love.keypressed(key)

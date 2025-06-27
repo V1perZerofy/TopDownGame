@@ -43,8 +43,10 @@ function Player.load(world)
 
     local startX, startY = 100, 100    -- later: read from Tiled object
     body = love.physics.newBody(world, startX, startY, "dynamic")
-    local shape   = love.physics.newRectangleShape(FRAME_W - 6, FRAME_H - 6)
-    local fixture = love.physics.newFixture(body, shape)
+    body:setFixedRotation(true) -- <--- Add this line
+    local shape   = love.physics.newRectangleShape(19, 23)
+    local shapeTruncated = love.physics.newRectangleShape()
+    local fixture = love.physics.newFixture(body, shapeTruncated)
     fixture:setUserData("Player")
 end
 
@@ -104,5 +106,18 @@ function Player.checkMapChange()
     return false
 end
 
+function Player.debugDraw()
+    local x, y = body:getPosition()
+    local shape = body:getFixtures()[1]:getShape()
+    love.graphics.setColor(1, 0, 0, 0.5) -- red, semi-transparent
+    love.graphics.push()
+    love.graphics.translate(x, y)
+    love.graphics.rotate(body:getAngle())
+    if shape:typeOf("PolygonShape") then
+        love.graphics.polygon("line", shape:getPoints())
+    end
+    love.graphics.pop()
+    love.graphics.setColor(1, 1, 1, 1)
+end
 
 return Player
