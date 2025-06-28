@@ -87,6 +87,8 @@ function Player.update(dt)
         body:setLinearVelocity(0, 0)
         currentFrame, frameTimer = 1, 0
     end
+    -- mapChange detection
+    Player.handleMapChange()
 end
 
 -- draw player sprite at body position
@@ -104,6 +106,14 @@ function Player.checkMapChange()
         end
     end
     return false
+end
+
+-- write a text message to the screen if player collides with mapChange
+function Player.handleMapChange()
+    if Player.checkMapChange() then
+        love.graphics.setColor(1, 1, 1, 1) -- white text
+        love.graphics.printf("Map Change Detected!", 0, 10, love.graphics.getWidth(), "center")
+    end
 end
 
 function Player.debugDraw()

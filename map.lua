@@ -11,6 +11,21 @@ function Map.load(world, mapFile)
     Map.world = world
     Map.tiled = sti(mapFile, { "box2d" })
     Map.tiled:box2d_init(world)        -- create static wall bodies
+    
+    for _, layer in ipairs(map.layers) do
+    if layer.type == "objectgroup" and layer.name == "MapChange" then
+        for _, obj in ipairs(layer.objects) do
+            local x = obj.x + obj.width / 2
+            local y = obj.y + obj.height / 2
+            local body = love.physics.newBody(world, x, y, "static")
+            local shape = love.physics.newRectangleShape(obj.width, obj.height)
+            local fixture = love.physics.newFixture(body, shape)
+            fixture:setSensor(true) -- not solid
+            fixture:setUserData("MapChange")
+        end
+    end
+end
+
 end
 
 ----------------------------------------------------------------
