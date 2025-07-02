@@ -19,8 +19,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 497.5,
-                "y": 346.5
+                "x": 331.5,
+                "y": 345.5
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx#full tilemap": {
@@ -72,6 +72,8 @@
     "project": "whispersOfTheHollow.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx",
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx",
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx"
     ],
     "tileset.embedInMap": true
