@@ -47,6 +47,9 @@ function Player.load(world)
         )
     end
 
+    spriteIdleLeft = love.graphics.newImage("assets/sprites/enemies_idle_l.png") 
+    
+
     currentSprite = spriteLeft
     currentQuads = quadsLeft
 
