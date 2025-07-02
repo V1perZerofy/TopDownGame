@@ -14,6 +14,15 @@ local currentFrame, frameTimer = 1, 0
 -- physics handles
 local body
 
+local mapChangeTriggered = false
+
+function Player.triggerMapChange()
+    mapChangeTriggered = true
+end
+
+function Player.clearMapChange()
+    mapChangeTriggered = false
+end
 
 function Player.load(world)
     -- sprite sheet → quads
@@ -87,34 +96,24 @@ function Player.update(dt)
         body:setLinearVelocity(0, 0)
         currentFrame, frameTimer = 1, 0
     end
-    -- mapChange detection
-    Player.handleMapChange()
 end
 
 -- draw player sprite at body position
 function Player.draw()
     local x, y = body:getPosition()
     love.graphics.draw(currentSprite, currentQuads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
+    Player.handleMapChange()
 end
 
--- check if player collides with mapChange object
-function Player.checkMapChange()
-    local fixtures = body:getFixtures()
-    for _, fixture in ipairs(fixtures) do
-        if fixture:getUserData() == "MapChange" then
-            return true
-        end
-    end
-    return false
-end
 
 -- write a text message to the screen if player collides with mapChange
 function Player.handleMapChange()
-    if Player.checkMapChange() then
-        love.graphics.setColor(1, 1, 1, 1) -- white text
-        love.graphics.printf("Map Change Detected!", 0, 10, love.graphics.getWidth(), "center")
+    if mapChangeTriggered then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.printf("You feel a pull... the air shifts around the stairs.", 0, 10, love.graphics.getWidth(), "center")
     end
 end
+
 
 function Player.debugDraw()
     local x, y = body:getPosition()

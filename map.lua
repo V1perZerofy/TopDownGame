@@ -12,7 +12,7 @@ function Map.load(world, mapFile)
     Map.tiled = sti(mapFile, { "box2d" })
     Map.tiled:box2d_init(world)        -- create static wall bodies
     
-    for _, layer in ipairs(map.layers) do
+    for _, layer in ipairs(Map.tiled.layers) do
     if layer.type == "objectgroup" and layer.name == "MapChange" then
         for _, obj in ipairs(layer.objects) do
             local x = obj.x + obj.width / 2

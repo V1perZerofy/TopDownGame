@@ -9,6 +9,21 @@ function love.load()
 
     world = love.physics.newWorld(0, 0)
 
+    world:setCallbacks(
+        function(a, b, coll)
+            local ua, ub = a:getUserData(), b:getUserData()
+            if (ua == "Player" and ub == "MapChange") or (ua == "MapChange" and ub == "Player") then
+                Player.triggerMapChange()
+            end
+        end,
+        function(a, b, coll)
+            local ua, ub = a:getUserData(), b:getUserData()
+            if (ua == "Player" and ub == "MapChange") or (ua == "MapChange" and ub == "Player") then
+                Player.clearMapChange()
+            end
+        end
+    )
+
     Map.load(world, "assets/maps/dungeon.lua")  -- Tiled export
     Player.load(world)                        -- dynamic body + sprite
 end
