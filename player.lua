@@ -4,6 +4,7 @@ local Player = {}
 local FRAME_W, FRAME_H = 64, 64
 local FRAMES_TOTAL     = 10
 local FRAME_TIME       = 0.08
+local facing = 0 -- 0: left, 1: right, 2: up, 3: down
 
 -- runtime
 local spriteLeft, quadsLeft = {}, {}
@@ -26,7 +27,6 @@ end
 
 function Player.load(world)
     -- sprite sheet → quads
-    -- sprite sheet → quads  (horizontal layout: 4 × 32×32 = 128×32)
     spriteLeft = love.graphics.newImage("assets/sprites/enemies_left.png") -- 128×32
     for i = 0, FRAMES_TOTAL - 1 do
         quadsLeft[i + 1] = love.graphics.newQuad(
@@ -52,7 +52,7 @@ function Player.load(world)
 
     local startX, startY = 100, 100    -- later: read from Tiled object
     body = love.physics.newBody(world, startX, startY, "dynamic")
-    body:setFixedRotation(true) -- <--- Add this line
+    body:setFixedRotation(true)
     local shape   = love.physics.newRectangleShape(25, 23)
     --local shapeTruncated = love.physics.newRectangleShape()
     local fixture = love.physics.newFixture(body, shape)
@@ -102,21 +102,12 @@ end
 function Player.draw()
     local x, y = body:getPosition()
     love.graphics.draw(currentSprite, currentQuads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
-    Player.handleMapChange()
 end
 
 function Player.setPosition(x, y)
     if body then
         body:setPosition(x, y)
         body:setLinearVelocity(0, 0)
-    end
-end
-
--- write a text message to the screen if player collides with mapChange
-function Player.handleMapChange()
-    if mapChangeTriggered then
-        love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.printf("You feel a pull... the air shifts around the stairs.", 0, 10, love.graphics.getWidth(), "center")
     end
 end
 
