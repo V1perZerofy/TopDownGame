@@ -1,0 +1,62 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Alle Dateien (*)",
+    "fileStates": {
+        "#FullTileset": {
+            "scaleInDock": 1
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx": {
+            "expandedObjectLayers": [
+                4,
+                5
+            ],
+            "scale": 1.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 304.99999999999994,
+                "y": 189.66666666666663
+            }
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx#full tilemap": {
+            "scaleInDock": 1
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx": {
+            "expandedObjectLayers": [
+                4,
+                5
+            ],
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 303.75,
+                "y": 141.25
+            }
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx#FullTileset": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps",
+    "last.imagePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/tiles",
+    "last.worldFilePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets",
+    "loadedWorlds": [
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/whispersOfTheHollow.world"
+    ],
+    "map.height": 8,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 16,
+    "openFiles": [
+    ],
+    "project": "whispersOfTheHollow.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}

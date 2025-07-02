@@ -14,14 +14,23 @@ function Map.load(world, mapFile)
     
     for _, layer in ipairs(Map.tiled.layers) do
     if layer.type == "objectgroup" and layer.name == "MapChange" then
+        Map.changers = {}  -- store each MapChange zone and metadata
+
         for _, obj in ipairs(layer.objects) do
             local x = obj.x + obj.width / 2
             local y = obj.y + obj.height / 2
             local body = love.physics.newBody(world, x, y, "static")
             local shape = love.physics.newRectangleShape(obj.width, obj.height)
             local fixture = love.physics.newFixture(body, shape)
-            fixture:setSensor(true) -- not solid
-            fixture:setUserData("MapChange")
+            fixture:setSensor(true)
+            
+            local changeData = {
+                map   = obj.properties and obj.properties.map or nil,
+                spawn = obj.properties and obj.properties.spawn or nil
+            }
+
+            fixture:setUserData({ type = "MapChange", data = changeData })
+            table.insert(Map.changers, { fixture = fixture, data = changeData })
         end
     end
 end

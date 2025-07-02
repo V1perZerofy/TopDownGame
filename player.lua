@@ -105,6 +105,12 @@ function Player.draw()
     Player.handleMapChange()
 end
 
+function Player.setPosition(x, y)
+    if body then
+        body:setPosition(x, y)
+        body:setLinearVelocity(0, 0)
+    end
+end
 
 -- write a text message to the screen if player collides with mapChange
 function Player.handleMapChange()
@@ -127,6 +133,14 @@ function Player.debugDraw()
     end
     love.graphics.pop()
     love.graphics.setColor(1, 1, 1, 1)
+end
+
+function Player.getPosition()
+    if body then
+        return body:getPosition()
+    else
+        return 0, 0
+    end
 end
 
 return Player

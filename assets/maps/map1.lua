@@ -956,7 +956,10 @@ return {
           height = 24,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["map"] = "map2",
+            ["spawn"] = "490, 96"
+          }
         }
       }
     }
