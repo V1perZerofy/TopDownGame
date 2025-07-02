@@ -1,52 +1,146 @@
 local Player = {}
 
-Player.x = 64
-Player.y = 64
-Player.speed = 100
+-- animation config
+local FRAME_W, FRAME_H = 64, 64
+local FRAMES_TOTAL     = 10
+local FRAME_TIME       = 0.08
 
-local spriteSheet
-local quads = {}
-local frameWidth = 32
-local frameHeight = 32
-local currentFrame = 1
-local frameTimer = 0
-local frameDelay = 0.1
-local totalFrames = 4
+-- runtime
+local spriteLeft, quadsLeft = {}, {}
+local spriteRight, quadsRight = {}, {}
+local currentSprite, currentQuads
+local currentFrame, frameTimer = 1, 0
 
-function Player.load()
-    spriteSheet = love.graphics.newImage("assets/sprites/player.png")
-    local sheetWidth = spriteSheet:getWidth()
+-- physics handles
+local body
 
-    for i = 0, (sheetWidth / frameWidth) - 1 do
-        quads[#quads + 1] = love.graphics.newQuad(
-            i * frameWidth, 0,
-            frameWidth, frameHeight,
-            spriteSheet:getDimensions()
+local mapChangeTriggered = false
+
+function Player.triggerMapChange()
+    mapChangeTriggered = true
+end
+
+function Player.clearMapChange()
+    mapChangeTriggered = false
+end
+
+function Player.load(world)
+    -- sprite sheet → quads
+    -- sprite sheet → quads  (horizontal layout: 4 × 32×32 = 128×32)
+    spriteLeft = love.graphics.newImage("assets/sprites/enemies_left.png") -- 128×32
+    for i = 0, FRAMES_TOTAL - 1 do
+        quadsLeft[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,         -- x-offset moves horizontally
+            14,                   -- y-offset stays 0
+            FRAME_W, FRAME_H,    -- frame size
+            spriteLeft:getDimensions()
         )
     end
+
+    spriteRight = love.graphics.newImage("assets/sprites/enemies.png") -- 128×32
+    for i = 0, FRAMES_TOTAL - 1 do
+        quadsRight[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,         -- x-offset moves horizontally
+            14,                   -- y-offset stays 0
+            FRAME_W, FRAME_H,    -- frame size
+            spriteRight:getDimensions()
+        )
+    end
+
+    currentSprite = spriteLeft
+    currentQuads = quadsLeft
+
+    local startX, startY = 100, 100    -- later: read from Tiled object
+    body = love.physics.newBody(world, startX, startY, "dynamic")
+    body:setFixedRotation(true) -- <--- Add this line
+    local shape   = love.physics.newRectangleShape(25, 23)
+    --local shapeTruncated = love.physics.newRectangleShape()
+    local fixture = love.physics.newFixture(body, shape)
+    fixture:setUserData("Player")
 end
 
+-- update player position based on keyboard input
+-- and animate sprite frames
 function Player.update(dt)
-    local moving = false
+    local speed = 50
+    local vx, vy = 0, 0
+    if love.keyboard.isDown("w") then 
+        vy = vy - 1 
+    end
+    if love.keyboard.isDown("s") then 
+        vy = vy + 1
+    end
+    if love.keyboard.isDown("a") then 
+        vx = vx - 1 
+        currentSprite = spriteLeft
+        currentQuads = quadsLeft
+    end
+    if love.keyboard.isDown("d") then 
+        vx = vx + 1 
+        currentSprite = spriteRight
+        currentQuads = quadsRight
+    end
 
-    if love.keyboard.isDown("w") then Player.y = Player.y - Player.speed * dt; moving = true end
-    if love.keyboard.isDown("s") then Player.y = Player.y + Player.speed * dt; moving = true end
-    if love.keyboard.isDown("a") then Player.x = Player.x - Player.speed * dt; moving = true end
-    if love.keyboard.isDown("d") then Player.x = Player.x + Player.speed * dt; moving = true end
+    local len = math.sqrt(vx*vx + vy*vy)
+    if len > 0 then
+        vx, vy = vx / len, vy / len
+        body:setLinearVelocity(vx * speed, vy * speed)
 
-    if moving then
+        -- advance animation
         frameTimer = frameTimer + dt
-        if frameTimer >= frameDelay then
-            frameTimer = 0
-            currentFrame = currentFrame % totalFrames + 1
+        if frameTimer >= FRAME_TIME then
+            frameTimer  = frameTimer - FRAME_TIME
+            currentFrame = currentFrame % FRAMES_TOTAL + 1
         end
     else
-        currentFrame = 1
+        body:setLinearVelocity(0, 0)
+        currentFrame, frameTimer = 1, 0
     end
 end
 
+-- draw player sprite at body position
 function Player.draw()
-    love.graphics.draw(spriteSheet, quads[currentFrame], Player.x, Player.y)
+    local x, y = body:getPosition()
+    love.graphics.draw(currentSprite, currentQuads[currentFrame], x - FRAME_W/2, y - FRAME_H/2)
+    Player.handleMapChange()
+end
+
+function Player.setPosition(x, y)
+    if body then
+        body:setPosition(x, y)
+        body:setLinearVelocity(0, 0)
+    end
+end
+
+-- write a text message to the screen if player collides with mapChange
+function Player.handleMapChange()
+    if mapChangeTriggered then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.printf("You feel a pull... the air shifts around the stairs.", 0, 10, love.graphics.getWidth(), "center")
+    end
+end
+
+
+function Player.debugDraw()
+    local x, y = body:getPosition()
+    local shape = body:getFixtures()[1]:getShape()
+    love.graphics.setColor(1, 0, 0, 0.5) -- red, semi-transparent
+    love.graphics.push()
+    love.graphics.translate(x, y)
+    love.graphics.rotate(body:getAngle())
+    if shape:typeOf("PolygonShape") then
+        love.graphics.polygon("line", shape:getPoints())
+    end
+    love.graphics.pop()
+    love.graphics.setColor(1, 1, 1, 1)
+end
+
+function Player.getPosition()
+    if body then
+        return body:getPosition()
+    else
+        return 0, 0
+    end
 end
 
 return Player
