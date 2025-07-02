@@ -9,8 +9,8 @@ return {
   height = 8,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 6,
-  nextobjectid = 13,
+  nextlayerid = 7,
+  nextobjectid = 12,
   properties = {},
   tilesets = {
     {
@@ -63,13 +63,13 @@ return {
       encoding = "lua",
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 52, 43, 53, 52, 53, 44, 43, 44, 43, 53, 45, 54, 43, 53, 0,
-        0, 32, 32, 23, 21, 23, 32, 22, 31, 21, 30, 30, 12, 21, 32, 44,
-        0, 21, 22, 12, 22, 23, 12, 12, 12, 30, 23, 32, 12, 22, 12, 24,
-        0, 13, 30, 23, 23, 23, 22, 30, 21, 30, 21, 12, 30, 23, 32, 0,
-        0, 21, 23, 31, 21, 12, 23, 32, 22, 13, 30, 31, 30, 13, 12, 0,
-        0, 30, 32, 31, 22, 12, 22, 31, 31, 21, 21, 22, 13, 22, 32, 0,
-        0, 31, 13, 22, 12, 31, 13, 21, 21, 30, 12, 31, 31, 31, 13, 0
+        0, 52, 44, 44, 44, 45, 53, 45, 54, 54, 44, 53, 52, 52, 45, 0,
+        0, 13, 32, 23, 12, 12, 21, 21, 24, 22, 21, 32, 23, 31, 32, 0,
+        43, 22, 32, 24, 12, 31, 32, 30, 22, 22, 31, 24, 30, 32, 30, 0,
+        12, 33, 30, 31, 32, 23, 31, 23, 31, 30, 23, 12, 30, 31, 22, 0,
+        0, 33, 32, 24, 22, 33, 31, 21, 32, 32, 22, 31, 30, 24, 32, 0,
+        0, 12, 13, 24, 31, 13, 13, 24, 24, 13, 30, 21, 12, 24, 13, 0,
+        0, 24, 12, 33, 32, 32, 22, 22, 32, 22, 13, 21, 30, 22, 13, 0
       }
     },
     {
@@ -78,7 +78,7 @@ return {
       y = 0,
       width = 16,
       height = 8,
-      id = 1,
+      id = 3,
       name = "Walls",
       class = "",
       visible = true,
@@ -91,10 +91,10 @@ return {
       encoding = "lua",
       data = {
         41, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 40,
-        50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65,
-        50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56,
         50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
+        69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
+        60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
         50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
         50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
         59, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 58
@@ -106,7 +106,7 @@ return {
       y = 0,
       width = 16,
       height = 8,
-      id = 3,
+      id = 4,
       name = "Decoration",
       class = "",
       visible = true,
@@ -131,7 +131,7 @@ return {
     {
       type = "objectgroup",
       draworder = "topdown",
-      id = 4,
+      id = 5,
       name = "collision",
       class = "",
       visible = true,
@@ -158,27 +158,14 @@ return {
           properties = {}
         },
         {
-          id = 2,
+          id = 3,
           name = "",
           type = "",
           shape = "rectangle",
           x = 24,
           y = 48,
           width = 8,
-          height = 208,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 3,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 32,
-          y = 248,
-          width = 448,
-          height = 8,
+          height = 40,
           rotation = 0,
           visible = true,
           properties = {}
@@ -188,10 +175,10 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 480,
-          y = 120,
-          width = 8,
-          height = 136,
+          x = 0,
+          y = 88,
+          width = 32,
+          height = 24,
           rotation = 0,
           visible = true,
           properties = {}
@@ -201,10 +188,10 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 488,
-          y = 120,
-          width = 24,
-          height = 8,
+          x = 0,
+          y = 112,
+          width = 2,
+          height = 40,
           rotation = 0,
           visible = true,
           properties = {}
@@ -214,23 +201,49 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 480,
-          y = 48,
+          x = 0,
+          y = 152,
           width = 32,
-          height = 32,
+          height = 8,
           rotation = 0,
           visible = true,
           properties = {}
         },
         {
-          id = 11,
+          id = 7,
           name = "",
           type = "",
           shape = "rectangle",
-          x = 512,
-          y = 80,
-          width = -2,
-          height = 40,
+          x = 24,
+          y = 160,
+          width = 8,
+          height = 96,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 32,
+          y = 248,
+          width = 456,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 480,
+          y = 48,
+          width = 8,
+          height = 200,
           rotation = 0,
           visible = true,
           properties = {}
@@ -240,7 +253,7 @@ return {
     {
       type = "objectgroup",
       draworder = "topdown",
-      id = 5,
+      id = 6,
       name = "MapChange",
       class = "",
       visible = true,
@@ -252,19 +265,19 @@ return {
       properties = {},
       objects = {
         {
-          id = 9,
+          id = 10,
           name = "",
           type = "",
           shape = "rectangle",
-          x = 496,
-          y = 80,
+          x = 8,
+          y = 112,
           width = 8,
           height = 40,
           rotation = 0,
           visible = true,
           properties = {
             ["map"] = "map1",
-            ["spawn"] = "50, 223"
+            ["spawn"] = "480, 130"
           }
         }
       }
