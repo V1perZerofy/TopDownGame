@@ -4,6 +4,11 @@ local Player = require("player")
 local world          -- Box2D world shared by map & player
 local nextMap, currentChangeData
 local lightCanvas, lightShader
+local lightMaskCanvas
+
+local currentLightRadius = 180
+local targetLightRadius = 180
+local lightLerpSpeed = 5 -- higher = faster fade
 
 local function setupWorld()
     world = love.physics.newWorld(0, 0)
@@ -42,22 +47,35 @@ local function setupWorld()
     )
 end
 
+local torchShader = love.graphics.newShader([[
+    extern vec2 torchPos;
+    extern number torchRadius;
+    extern vec3 torchColor;
+
+    vec4 effect(vec4 color, Image tex, vec2 texCoord, vec2 screenCoord) {
+        float d = distance(screenCoord, torchPos);
+        float glow = 1.0 - smoothstep(torchRadius - 150.0, torchRadius, d);
+        glow = clamp(glow, 0.0, 1.0); // ✨ safe
+        return vec4(torchColor * glow, glow);
+    }
+]])
+
+
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     setupWorld()
 
     lightCanvas = love.graphics.newCanvas()
+    lightMaskCanvas = love.graphics.newCanvas()
 
     lightShader = love.graphics.newShader([[
-    extern vec2 lightPosition;
-    extern number radius;
+    extern Image lightMask;
 
-    vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
-        float dist = distance(screen_coords, lightPosition);
-        float fade = smoothstep(radius - 150.0, radius, dist);
-        vec4 fog = vec4(0.0, 0.0, 0.0, fade); // dark overlay
-        vec4 base = Texel(tex, texture_coords);
-        return mix(base, fog, fog.a);
+    vec4 effect(vec4 color, Image tex, vec2 texCoord, vec2 screenCoord) {
+        vec4 base = Texel(tex, texCoord);
+        float light = Texel(lightMask, texCoord).r; // Use red channel (all channels are equal)
+        float shadow = 1.0 - light;
+        return vec4(mix(base.rgb, vec3(0.0), shadow), 1.0); // black fog
     }
 ]])
 
@@ -71,6 +89,10 @@ function love.update(dt)
     world:update(dt)
     Map.update(dt)
     Player.update(dt)
+
+    -- Smooth radius interpolation
+    currentLightRadius = currentLightRadius + (targetLightRadius - currentLightRadius) * math.min(lightLerpSpeed * dt, 1)
+
     if nextMap then
         setupWorld()
         Map.load(world, nextMap.path)
@@ -86,57 +108,72 @@ end
 ---- filepath: c:\Users\niels\Documents\GitKraken\TopDownGame\main.lua
 function love.draw()
     local w, h = love.graphics.getDimensions()
-    local mapWidth  = Map.tiled.width  * Map.tiled.tilewidth
-    local mapHeight = Map.tiled.height * Map.tiled.tileheight
-    local scale = math.min(w/mapWidth, h/mapHeight)
+    local scale = math.min(w / (Map.tiled.width * Map.tiled.tilewidth), h / (Map.tiled.height * Map.tiled.tileheight))
+    local px, py = Player.getPosition()
+    local screenX, screenY = px * scale, py * scale
 
-    -- draw everything to canvas
+    --------------------------------------------------------
+    -- 1. Draw world to main canvas
+    --------------------------------------------------------
     lightCanvas:renderTo(function()
         love.graphics.clear()
-
         love.graphics.push()
         love.graphics.scale(scale, scale)
-
         Map.drawLayer("Floor")
         Map.drawLayer("Decoration")
         Player.draw()
         Map.drawLayer("Walls")
-        -- Map.debugDraw()
-        -- Player.debugDraw()
-
         love.graphics.pop()
     end)
 
-    -- Get player light position in screen space
-    local px, py = Player.getPosition()
-    local screenX = px * scale
-    local screenY = py * scale
-    local radius = 120 -- default radius for light
+    lightMaskCanvas:renderTo(function()
+        love.graphics.clear(0, 0, 0, 1) -- full black
 
-    -- Get Light radius from player
-    if Player.isMoving() then
-        radius = 155 -- tweak for fog size
-    else
-        radius = 180 -- tweak for fog size
-    end
+        -- Player glow (non-flickering)
+        torchShader:send("torchPos", {screenX, screenY})
+        torchShader:send("torchRadius", currentLightRadius)
+        love.graphics.setShader(torchShader)
+        love.graphics.setBlendMode("add")
+        love.graphics.rectangle("fill", 0, 0, w, h)
 
-    -- Apply shader and draw canvas
-    lightShader:send("lightPosition", {screenX, screenY})
-    lightShader:send("radius", radius) -- tweak for fog size
+        -- Torches (flickering)
+        for _, torch in ipairs(Map.getTorches()) do
+            local time = love.timer.getTime()
+            local flicker = math.sin(time * 3 + torch.x * 0.1) * 6
+            local color = Map.getTorchColor(torch.color)
+            torchShader:send("torchPos", { torch.x * scale, torch.y * scale })
+            torchShader:send("torchRadius", torch.radius + flicker)
+            --torchShader:send("torchColor", color)
+            torchShader:send("torchColor", {1.0, 0.0, 0.0}) -- RED
 
+            love.graphics.setShader(torchShader)
+            love.graphics.rectangle("fill", 0, 0, w, h)
+        end
+
+
+        love.graphics.setShader(lightShader)
+        love.graphics.setBlendMode("alpha")
+        love.graphics.setShader()
+    end)
+
+
+    --------------------------------------------------------
+    -- 3. Apply fog shader using light mask
+    --------------------------------------------------------
+    lightShader:send("lightMask", lightMaskCanvas)
     love.graphics.setShader(lightShader)
     love.graphics.draw(lightCanvas)
     love.graphics.setShader()
 
-    -- HUD / prompts on top
+    --------------------------------------------------------
+    -- 4. UI
+    --------------------------------------------------------
     if currentChangeData then
         love.graphics.setColor(1,1,1,1)
-        love.graphics.printf(
-            "Press E to enter " .. currentChangeData.map,
-            0, h - 30, w, "center"
-        )
+        love.graphics.printf("Press E to enter " .. currentChangeData.map, 0, h - 30, w, "center")
     end
 end
+
 
 
 function love.keypressed(key)

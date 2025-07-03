@@ -3,6 +3,8 @@ local sti = require("libs.sti")
 
 local Map = {}
 local layersDrawOrder = { "Floor", "Walls", "Decoration" }
+local torches = {}
+local defaultRadius = 100
 
 ----------------------------------------------------------------
 -- load(mapFile)  : mapFile = path to Tiled Lua export
@@ -30,6 +32,21 @@ function Map.load(world, mapFile)
                 }
                 fixture:setUserData({type="MapChange", data=data})
             end
+        end
+    end
+
+    -- Clear existing torches
+    torches = {}
+
+    -- Load torches from Tiled "Torches" object layer
+    local torchLayer = Map.tiled.layers["torches"]
+    if torchLayer and torchLayer.objects then
+        for _, obj in ipairs(torchLayer.objects) do
+            local x = obj.x + (obj.width or 0) / 2
+            local y = obj.y + (obj.height or 0) / 2
+            local radius = tonumber(obj.properties and obj.properties.radius) or defaultRadius
+            local colorStr = obj.properties and obj.properties.color or "orange"
+            Map.addTorch(x, y, radius, colorStr)
         end
     end
 end
@@ -78,6 +95,36 @@ function Map.debugDraw()
         end
     end
     love.graphics.setColor(1, 1, 1, 1)
+end
+
+local colorMap = {
+    white  = {1.0, 1.0, 1.0},
+    orange = {1.0, 0.6, 0.2},
+    blue   = {0.4, 0.6, 1.0},
+    green  = {0.5, 1.0, 0.5},
+    red    = {1.0, 0.2, 0.2}
+}
+
+function Map.getTorchColor(name)
+    if type(name) == "string" then
+        local r, g, b = name:match("(%d*%.?%d+),(%d*%.?%d+),(%d*%.?%d+)")
+        if r and g and b then return {tonumber(r), tonumber(g), tonumber(b)} end
+        return colorMap[name] or {1.0, 1.0, 1.0}
+    end
+    return {1.0, 1.0, 1.0}
+end
+
+function Map.addTorch(x, y, radius, color)
+    table.insert(torches, {
+        x = x,
+        y = y,
+        radius = radius or 100,
+        color = color or "white"
+    })
+end
+
+function Map.getTorches()
+    return torches
 end
 
 return Map

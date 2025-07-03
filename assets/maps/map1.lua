@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.10.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -9,8 +9,8 @@ return {
   height = 8,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 6,
-  nextobjectid = 26,
+  nextlayerid = 8,
+  nextobjectid = 33,
   properties = {},
   tilesets = {
     {
@@ -644,6 +644,35 @@ return {
           }
         }
       }
+    },
+    {
+      name = "second",
+      firstgid = 73,
+      class = "",
+      tilewidth = 32,
+      tileheight = 32,
+      spacing = 0,
+      margin = 0,
+      columns = 10,
+      image = "../tiles/Dungeon_Tileset.png",
+      imagewidth = 320,
+      imageheight = 320,
+      objectalignment = "unspecified",
+      tilerendersize = "tile",
+      fillmode = "stretch",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 32,
+        height = 32
+      },
+      properties = {},
+      wangsets = {},
+      tilecount = 100,
+      tiles = {}
     }
   },
   layers = {
@@ -722,13 +751,77 @@ return {
       encoding = "lua",
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 14, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 163, 0, 14, 0, 0,
+        0, 164, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
         0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 10, 11, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 10, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2147483812, 0,
         0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 7,
+      name = "torches",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 29,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 360,
+          y = 40,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "orange",
+            ["radius"] = 150
+          }
+        },
+        {
+          id = 30,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 32,
+          y = 64,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "orange",
+            ["radius"] = 150
+          }
+        },
+        {
+          id = 31,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 464,
+          y = 160,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "orange",
+            ["radius"] = 150
+          }
+        }
       }
     },
     {
@@ -806,19 +899,6 @@ return {
           shape = "rectangle",
           x = 384,
           y = 64,
-          width = 64,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 6,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 384,
-          y = 128,
           width = 64,
           height = 16,
           rotation = 0,
