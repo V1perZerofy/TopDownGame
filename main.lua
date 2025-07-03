@@ -3,6 +3,7 @@ local Player = require("player")
 
 local world          -- Box2D world shared by map & player
 local nextMap, currentChangeData
+local lightCanvas, lightShader
 
 local function setupWorld()
     world = love.physics.newWorld(0, 0)
@@ -45,6 +46,23 @@ function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     setupWorld()
 
+    lightCanvas = love.graphics.newCanvas()
+
+    lightShader = love.graphics.newShader([[
+    extern vec2 lightPosition;
+    extern number radius;
+
+    vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        float dist = distance(screen_coords, lightPosition);
+        float fade = smoothstep(radius - 100.0, radius, dist);
+        vec4 fog = vec4(0.0, 0.0, 0.0, fade); // dark overlay
+        vec4 base = Texel(tex, texture_coords);
+        return mix(base, fog, fog.a);
+    }
+]])
+
+
+
     Map.load(world, "assets/maps/map1.lua")
     Player.load(world)
 end
@@ -72,30 +90,54 @@ function love.draw()
     local mapHeight = Map.tiled.height * Map.tiled.tileheight
     local scale = math.min(w/mapWidth, h/mapHeight)
 
-    love.graphics.push()
-    love.graphics.scale(scale, scale)
+    -- draw everything to canvas
+    lightCanvas:renderTo(function()
+        love.graphics.clear()
 
-    -- Draw map layers & player
-    Map.drawLayer("Floor")
-    Map.drawLayer("Decoration")
-    Player.draw()
-    Map.drawLayer("Walls")
-    --Map.debugDraw()
-    --Player.debugDraw()
+        love.graphics.push()
+        love.graphics.scale(scale, scale)
 
-    love.graphics.pop()
+        Map.drawLayer("Floor")
+        Map.drawLayer("Decoration")
+        Player.draw()
+        Map.drawLayer("Walls")
+        -- Map.debugDraw()
+        -- Player.debugDraw()
 
-    -- if we're on a MapChange trigger, show prompt in screen‐space
+        love.graphics.pop()
+    end)
+
+    -- Get player light position in screen space
+    local px, py = Player.getPosition()
+    local screenX = px * scale
+    local screenY = py * scale
+    local radius = 120 -- default radius for light
+
+    -- Get Light radius from player
+    if Player.isMoving() then
+        radius = 125 -- tweak for fog size
+    else
+        radius = 160 -- tweak for fog size
+    end
+
+    -- Apply shader and draw canvas
+    lightShader:send("lightPosition", {screenX, screenY})
+    lightShader:send("radius", radius) -- tweak for fog size
+
+    love.graphics.setShader(lightShader)
+    love.graphics.draw(lightCanvas)
+    love.graphics.setShader()
+
+    -- HUD / prompts on top
     if currentChangeData then
         love.graphics.setColor(1,1,1,1)
         love.graphics.printf(
             "Press E to enter " .. currentChangeData.map,
-            0, h - 30,      -- x=0, y=30px from bottom
-            w,              -- full width
-            "center"
+            0, h - 30, w, "center"
         )
     end
 end
+
 
 function love.keypressed(key)
     if key == "escape" then

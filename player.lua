@@ -19,6 +19,7 @@ local currentFrame, frameTimer = 1, 0
 
 -- physics
 local body
+local moved = false  -- player moved this frame
 
 -- map transition flag
 local mapChangeTriggered = false
@@ -66,7 +67,7 @@ end
 function Player.update(dt)
     local speed = 50
     local vx, vy = 0, 0
-    local moved = false
+    moved = false
 
     if love.keyboard.isDown("w") then
         vy = vy - 1
@@ -178,6 +179,10 @@ end
 function Player.getPosition()
     if body then return body:getPosition() end
     return 0, 0
+end
+
+function Player.isMoving()
+    return moved
 end
 
 return Player
