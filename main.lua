@@ -54,7 +54,7 @@ function love.load()
 
     vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
         float dist = distance(screen_coords, lightPosition);
-        float fade = smoothstep(radius - 100.0, radius, dist);
+        float fade = smoothstep(radius - 150.0, radius, dist);
         vec4 fog = vec4(0.0, 0.0, 0.0, fade); // dark overlay
         vec4 base = Texel(tex, texture_coords);
         return mix(base, fog, fog.a);
@@ -115,9 +115,9 @@ function love.draw()
 
     -- Get Light radius from player
     if Player.isMoving() then
-        radius = 125 -- tweak for fog size
+        radius = 155 -- tweak for fog size
     else
-        radius = 160 -- tweak for fog size
+        radius = 180 -- tweak for fog size
     end
 
     -- Apply shader and draw canvas
