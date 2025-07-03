@@ -21,7 +21,7 @@ function Map.load(world, mapFile)
                 local fixture = love.physics.newFixture(body, shape)
                 fixture:setSensor(true)
                 local data = { map = obj.properties and obj.properties.map,
-                               spawn = obj.properties and obj.properties.spawn }
+                                spawn = obj.properties and obj.properties.spawn }
                 fixture:setUserData({type="MapChange", data=data})
             end
         end

@@ -51,24 +51,36 @@ function love.update(dt)
     end
 end
 
+---- filepath: c:\Users\niels\Documents\GitKraken\TopDownGame\main.lua
 function love.draw()
     local w, h = love.graphics.getDimensions()
-    local mapWidth = Map.tiled.width * Map.tiled.tilewidth
+    local mapWidth  = Map.tiled.width  * Map.tiled.tilewidth
     local mapHeight = Map.tiled.height * Map.tiled.tileheight
-    local scale = math.min(w / mapWidth, h / mapHeight)
+    local scale = math.min(w/mapWidth, h/mapHeight)
+
+    love.graphics.push()
     love.graphics.scale(scale, scale)
-    -- Draw Floor layer only
+
+    -- Draw map layers & player
     Map.drawLayer("Floor")
     Map.drawLayer("Decoration")
-
-    -- Draw player
     Player.draw()
-
-    -- Draw Walls and Decoration layers
     Map.drawLayer("Walls")
+    --Map.debugDraw()
+    --Player.debugDraw()
 
-    Map.debugDraw()
-    Player.debugDraw()
+    love.graphics.pop()
+
+    -- if we're on a MapChange trigger, show prompt in screen‐space
+    if currentChangeData then
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.printf(
+            "Press E to enter " .. currentChangeData.map,
+            0, h - 30,      -- x=0, y=30px from bottom
+            w,              -- full width
+            "center"
+        )
+    end
 end
 
 function love.keypressed(key)
