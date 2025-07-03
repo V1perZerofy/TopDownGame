@@ -13,6 +13,13 @@
             "width": 512,
             "x": 512,
             "y": 0
+        },
+        {
+            "fileName": "maps/dungeonMap3.tmx",
+            "height": 256,
+            "width": 512,
+            "x": 1024,
+            "y": 0
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -9,32 +9,23 @@ local layersDrawOrder = { "Floor", "Walls", "Decoration" }
 ----------------------------------------------------------------
 function Map.load(world, mapFile)
     Map.world = world
-    Map.tiled = sti(mapFile, { "box2d" })
-    Map.tiled:box2d_init(world)        -- create static wall bodies
-    
+    Map.tiled = sti(mapFile, {"box2d"})
+    Map.tiled:box2d_init(world)
     for _, layer in ipairs(Map.tiled.layers) do
-    if layer.type == "objectgroup" and layer.name == "MapChange" then
-        Map.changers = {}  -- store each MapChange zone and metadata
-
-        for _, obj in ipairs(layer.objects) do
-            local x = obj.x + obj.width / 2
-            local y = obj.y + obj.height / 2
-            local body = love.physics.newBody(world, x, y, "static")
-            local shape = love.physics.newRectangleShape(obj.width, obj.height)
-            local fixture = love.physics.newFixture(body, shape)
-            fixture:setSensor(true)
-            
-            local changeData = {
-                map   = obj.properties and obj.properties.map or nil,
-                spawn = obj.properties and obj.properties.spawn or nil
-            }
-
-            fixture:setUserData({ type = "MapChange", data = changeData })
-            table.insert(Map.changers, { fixture = fixture, data = changeData })
+        if layer.type == "objectgroup" and layer.name == "MapChange" then
+            for _, obj in ipairs(layer.objects) do
+                local x = obj.x + obj.width/2
+                local y = obj.y + obj.height/2
+                local body = love.physics.newBody(world, x, y, "static")
+                local shape = love.physics.newRectangleShape(obj.width, obj.height)
+                local fixture = love.physics.newFixture(body, shape)
+                fixture:setSensor(true)
+                local data = { map = obj.properties and obj.properties.map,
+                                spawn = obj.properties and obj.properties.spawn }
+                fixture:setUserData({type="MapChange", data=data})
+            end
         end
     end
-end
-
 end
 
 ----------------------------------------------------------------
