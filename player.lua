@@ -2,13 +2,16 @@ local Player = {}
 
 -- animation config
 local FRAME_W, FRAME_H = 64, 64
-local FRAMES_TOTAL     = 10
 local FRAME_TIME       = 0.08
+local FRAMES_TOTAL     = 10 -- total frames for walking animation
+local IDLE_FRAMES_TOTAL = 6 -- total frames for idle animation
 local facing = 0 -- 0: left, 1: right, 2: up, 3: down
 
 -- runtime
 local spriteLeft, quadsLeft = {}, {}
 local spriteRight, quadsRight = {}, {}
+local spriteIdleLeft, quadsIdleLeft = {}, {}
+local spriteIdleRight, quadsIdleRight = {}, {}
 local currentSprite, currentQuads
 local currentFrame, frameTimer = 1, 0
 
@@ -47,8 +50,25 @@ function Player.load(world)
         )
     end
 
-    spriteIdleLeft = love.graphics.newImage("assets/sprites/enemies_idle_l.png") 
-    
+    spriteIdleLeft = love.graphics.newImage("assets/sprites/enemies_idle_l.png")
+    for i = 0, IDLE_FRAMES_TOTAL - 1 do
+        quadsIdleLeft[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,
+            14,
+            FRAME_W, FRAME_H,
+            spriteIdleLeft:getDimensions()
+        )
+    end
+
+    spriteIdleRight = love.graphics.newImage("assets/sprites/enemies_idle_r.png")
+    for i = 0, IDLE_FRAMES_TOTAL - 1 do
+        quadsIdleRight[i + 1] = love.graphics.newQuad(
+            i * FRAME_W,
+            14,
+            FRAME_W, FRAME_H,
+            spriteIdleRight:getDimensions()
+        )
+    end
 
     currentSprite = spriteLeft
     currentQuads = quadsLeft
@@ -77,11 +97,30 @@ function Player.update(dt)
         vx = vx - 1 
         currentSprite = spriteLeft
         currentQuads = quadsLeft
+        facing = 0
     end
     if love.keyboard.isDown("d") then 
         vx = vx + 1 
         currentSprite = spriteRight
         currentQuads = quadsRight
+        facing = 1
+    end
+
+    if vx == 0 and vy == 0 then
+        body:setLinearVelocity(0, 0)
+        -- idle: left if facing==0, otherwise right for any other direction
+        if facing == 0 then
+            currentSprite = spriteIdleLeft; currentQuads = quadsIdleLeft
+        else
+            currentSprite = spriteIdleRight; currentQuads = quadsIdleRight
+        end
+        -- advance idle animation
+        frameTimer = frameTimer + dt
+        if frameTimer >= FRAME_TIME then
+            frameTimer = frameTimer - FRAME_TIME
+            currentFrame = (currentFrame % IDLE_FRAMES_TOTAL) + 1
+        end
+        return
     end
 
     local len = math.sqrt(vx*vx + vy*vy)
@@ -95,9 +134,6 @@ function Player.update(dt)
             frameTimer  = frameTimer - FRAME_TIME
             currentFrame = currentFrame % FRAMES_TOTAL + 1
         end
-    else
-        body:setLinearVelocity(0, 0)
-        currentFrame, frameTimer = 1, 0
     end
 end
 

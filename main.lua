@@ -67,8 +67,8 @@ function love.draw()
     -- Draw Walls and Decoration layers
     Map.drawLayer("Walls")
 
-    --Map.debugDraw()
-    --Player.debugDraw()
+    Map.debugDraw()
+    Player.debugDraw()
 end
 
 function love.keypressed(key)
