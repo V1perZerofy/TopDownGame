@@ -8,20 +8,34 @@ local function setupWorld()
     world = love.physics.newWorld(0, 0)
     love.physics.setMeter(32)
     world:setCallbacks(
+        -- beginContact: decide auto or require key
         function(a, b)
             local ua, ub = a:getUserData(), b:getUserData()
+            local data
             if type(ua) == "table" and ua.type == "MapChange" and ub == "Player" then
-                currentChangeData = ua.data; Player.triggerMapChange()
+                data = ua.data
             elseif type(ub) == "table" and ub.type == "MapChange" and ua == "Player" then
-                currentChangeData = ub.data; Player.triggerMapChange()
+                data = ub.data
+            end
+            if data then
+                if data.key then
+                    currentChangeData = data
+                else
+                    nextMap = { path = "assets/maps/" .. data.map .. ".lua", spawn = data.spawn }
+                end
             end
         end,
+        -- endContact: clear require‐key prompt
         function(a, b)
             local ua, ub = a:getUserData(), b:getUserData()
+            local data
             if type(ua) == "table" and ua.type == "MapChange" and ub == "Player" then
-                currentChangeData = nil; Player.clearMapChange()
+                data = ua.data
             elseif type(ub) == "table" and ub.type == "MapChange" and ua == "Player" then
-                currentChangeData = nil; Player.clearMapChange()
+                data = ub.data
+            end
+            if data and data.key then
+                currentChangeData = nil
             end
         end
     )

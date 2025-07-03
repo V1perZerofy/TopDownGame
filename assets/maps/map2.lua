@@ -263,6 +263,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["key"] = false,
             ["map"] = "map1",
             ["spawn"] = "50, 223"
           }

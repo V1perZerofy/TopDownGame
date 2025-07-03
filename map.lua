@@ -20,8 +20,14 @@ function Map.load(world, mapFile)
                 local shape = love.physics.newRectangleShape(obj.width, obj.height)
                 local fixture = love.physics.newFixture(body, shape)
                 fixture:setSensor(true)
-                local data = { map = obj.properties and obj.properties.map,
-                                spawn = obj.properties and obj.properties.spawn }
+                local prop = obj.properties or {}
+                local keyProp = prop.key
+                local keyBool = (keyProp == true or keyProp == "true")
+                local data = {
+                    map   = prop.map,
+                    spawn = prop.spawn,
+                    key   = keyBool
+                }
                 fixture:setUserData({type="MapChange", data=data})
             end
         end

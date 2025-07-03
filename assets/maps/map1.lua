@@ -1009,8 +1009,9 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["key"] = true,
             ["map"] = "map2",
-            ["spawn"] = "490, 96"
+            ["spawn"] = "475, 96"
           }
         },
         {
@@ -1025,8 +1026,9 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["key"] = false,
             ["map"] = "map3",
-            ["spawn"] = "20, 130"
+            ["spawn"] = "30, 130"
           }
         }
       }

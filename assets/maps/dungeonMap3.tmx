@@ -58,8 +58,9 @@
  <objectgroup id="6" name="MapChange">
   <object id="10" x="8" y="112" width="8" height="40">
    <properties>
+    <property name="key" type="bool" value="false"/>
     <property name="map" value="map1"/>
-    <property name="spawn" value="480, 130"/>
+    <property name="spawn" value="470, 130"/>
    </properties>
   </object>
  </objectgroup>
