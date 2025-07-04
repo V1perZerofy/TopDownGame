@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="12">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="28">
  <editorsettings>
   <export target="map3.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="FullTileset" tilewidth="32" tileheight="32" tilecount="72" columns="9">
   <image source="../tiles/full tilemap.png" width="288" height="256"/>
  </tileset>
+ <tileset firstgid="73" name="second" tilewidth="32" tileheight="32" tilecount="100" columns="10">
+  <image source="../tiles/Dungeon_Tileset.png" width="320" height="320"/>
+ </tileset>
  <layer id="2" name="Floor" width="16" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,52,44,44,44,45,53,45,54,54,44,53,52,52,45,0,
+0,52,44,44,44,45,53,45,54,54,44,52,52,52,45,0,
 0,13,32,23,12,12,21,21,24,22,21,32,23,31,32,0,
 43,22,32,24,12,31,32,30,22,22,31,24,30,32,30,0,
 12,33,30,31,32,23,31,23,31,30,23,12,30,31,22,0,
 0,33,32,24,22,33,31,21,32,32,22,31,30,24,32,0,
 0,12,13,24,31,13,13,24,24,13,30,21,12,24,13,0,
 0,24,12,33,32,32,22,22,32,22,13,21,30,22,13,0
+</data>
+ </layer>
+ <layer id="4" name="Decoration" width="16" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,163,0,0,163,0,0,163,0,0,163,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,163,0,0,163,0,0,163,0,0,163,0,0,0,0
 </data>
  </layer>
  <layer id="3" name="Walls" width="16" height="8">
@@ -30,18 +45,56 @@
 59,57,57,57,57,57,57,57,57,57,57,57,57,57,57,58
 </data>
  </layer>
- <layer id="4" name="Decoration" width="16" height="8">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
+ <objectgroup id="7" name="torches">
+  <object id="12" x="72" y="40" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="21" x="168" y="40" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="22" x="264" y="40" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="23" x="72" y="232" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="24" x="360" y="40" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="25" x="168" y="232" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="26" x="360" y="232" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+  <object id="27" x="264" y="232" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="radius" type="int" value="275"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="5" name="collision">
   <properties>
    <property name="collidable" type="bool" value="true"/>

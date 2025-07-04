@@ -3,10 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx",
     "expandedProjectPaths": [
     ],
-    "file.lastUsedOpenFilter": "Alle Dateien (*)",
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
             "scaleInDock": 1
@@ -23,13 +23,16 @@
                 4
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 189.66666666666663,
-                "y": 211.66666666666663
+                "x": 795,
+                "y": 171.66666666666663
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx#full tilemap": {
+            "scaleInDock": 1
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx#second": {
             "scaleInDock": 1
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx": {
@@ -37,11 +40,11 @@
                 5,
                 4
             ],
-            "scale": 1.5,
+            "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 482.33333333333337,
-                "y": 84.33333333333331
+                "x": 747.5,
+                "y": 235.5
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx#FullTileset": {
@@ -52,14 +55,17 @@
                 6,
                 5
             ],
-            "scale": 2,
-            "selectedLayer": 4,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": -240.25,
-                "y": 164.25
+                "x": 283.66666666666663,
+                "y": 172.33333333333337
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx#FullTileset": {
+            "scaleInDock": 1
+        },
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx#second": {
             "scaleInDock": 1
         },
         "C:/Users/niels/Documents/TopDownGame/assets/maps/dungeonMap.tmx": {
@@ -103,24 +109,27 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/niels/Documents/TopDownGame/assets/maps",
-    "last.imagePath": "C:/Users/niels/Documents/TopDownGame/assets/tiles",
+    "last.exportedFilePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps",
+    "last.imagePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/tiles",
     "last.worldFilePath": "C:/Users/niels/Documents/GitKraken/TopDownGame/assets",
     "loadedWorlds": [
-        "C:/Users/niels/Documents/TopDownGame/assets/whispersOfTheHollow.world"
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/whispersOfTheHollow.world"
     ],
     "map.height": 8,
-    "map.lastUsedExportFilter": "Alle Dateien (*)",
+    "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "map.width": 16,
     "openFiles": [
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx",
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx",
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx"
     ],
     "project": "whispersOfTheHollow.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
-        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx",
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx",
-        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx"
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx",
+        "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap2.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {

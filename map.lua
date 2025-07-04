@@ -1,18 +1,15 @@
--- Map module: loads a Tiled .lua map via STI and draws layers in order
+-- map.lua for Moonshine torches
 local sti = require("libs.sti")
-
 local Map = {}
-local layersDrawOrder = { "Floor", "Walls", "Decoration" }
+
 local torches = {}
 local defaultRadius = 100
 
-----------------------------------------------------------------
--- load(mapFile)  : mapFile = path to Tiled Lua export
-----------------------------------------------------------------
 function Map.load(world, mapFile)
     Map.world = world
     Map.tiled = sti(mapFile, {"box2d"})
     Map.tiled:box2d_init(world)
+
     for _, layer in ipairs(Map.tiled.layers) do
         if layer.type == "objectgroup" and layer.name == "MapChange" then
             for _, obj in ipairs(layer.objects) do
@@ -23,22 +20,17 @@ function Map.load(world, mapFile)
                 local fixture = love.physics.newFixture(body, shape)
                 fixture:setSensor(true)
                 local prop = obj.properties or {}
-                local keyProp = prop.key
-                local keyBool = (keyProp == true or keyProp == "true")
                 local data = {
                     map   = prop.map,
                     spawn = prop.spawn,
-                    key   = keyBool
+                    key   = (prop.key == true or prop.key == "true")
                 }
                 fixture:setUserData({type="MapChange", data=data})
             end
         end
     end
 
-    -- Clear existing torches
     torches = {}
-
-    -- Load torches from Tiled "Torches" object layer
     local torchLayer = Map.tiled.layers["torches"]
     if torchLayer and torchLayer.objects then
         for _, obj in ipairs(torchLayer.objects) do
@@ -51,50 +43,23 @@ function Map.load(world, mapFile)
     end
 end
 
-----------------------------------------------------------------
+function Map.drawLayer(name)
+    if Map.tiled and Map.tiled.layers[name] then
+        Map.tiled:drawLayer(Map.tiled.layers[name])
+    end
+end
+
 function Map.update(dt)
     if Map.tiled then Map.tiled:update(dt) end
 end
 
-----------------------------------------------------------------
-function Map.draw()
-    if not Map.tiled then return end
-    for _, name in ipairs(layersDrawOrder) do
-        local layer = Map.tiled.layers[name]
-        if layer then
-            Map.tiled:drawLayer(layer)
-        end
-    end
-end
-
--- Draw a single named layer
-function Map.drawLayer(name)
-    if not Map.tiled then return end
-    local layer = Map.tiled.layers[name]
-    if layer then
-        Map.tiled:drawLayer(layer)
-    end
-end
-
-function Map.debugDraw()
-    if not Map.tiled or not Map.world then return end
-    love.graphics.setColor(0, 1, 0, 0.5) -- green, semi-transparent
-    for _, body in pairs(Map.world:getBodies()) do
-        for _, fixture in pairs(body:getFixtures()) do
-            local shape = fixture:getShape()
-            local bx, by = body:getPosition()
-            love.graphics.push()
-            love.graphics.translate(bx, by)
-            love.graphics.rotate(body:getAngle())
-            if shape:typeOf("PolygonShape") then
-                love.graphics.polygon("line", shape:getPoints())
-            elseif shape:typeOf("CircleShape") then
-                love.graphics.circle("line", 0, 0, shape:getRadius())
-            end
-            love.graphics.pop()
-        end
-    end
-    love.graphics.setColor(1, 1, 1, 1)
+function Map.addTorch(x, y, radius, color)
+    table.insert(torches, {
+        x = x,
+        y = y,
+        radius = radius or defaultRadius,
+        color = color or "orange"
+    })
 end
 
 local colorMap = {
@@ -107,20 +72,16 @@ local colorMap = {
 
 function Map.getTorchColor(name)
     if type(name) == "string" then
-        local r, g, b = name:match("(%d*%.?%d+),(%d*%.?%d+),(%d*%.?%d+)")
-        if r and g and b then return {tonumber(r), tonumber(g), tonumber(b)} end
-        return colorMap[name] or {1.0, 1.0, 1.0}
+        local hex = name:match("#?([%da-fA-F]+)")
+        if hex and (#hex == 6 or #hex == 8) then
+            local r = tonumber(hex:sub(1,2), 16) / 255
+            local g = tonumber(hex:sub(3,4), 16) / 255
+            local b = tonumber(hex:sub(5,6), 16) / 255
+            return {r, g, b}
+        end
+        return colorMap[name:lower()] or {1.0, 1.0, 1.0}
     end
     return {1.0, 1.0, 1.0}
-end
-
-function Map.addTorch(x, y, radius, color)
-    table.insert(torches, {
-        x = x,
-        y = y,
-        radius = radius or 100,
-        color = color or "white"
-    })
 end
 
 function Map.getTorches()
