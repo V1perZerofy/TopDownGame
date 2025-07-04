@@ -1,4 +1,4 @@
--- main.lua with Moonshine integrated torch lighting
+
 local Map    = require("map")
 local Player = require("player")
 local moonshine = require("libs.moonshine")
@@ -10,12 +10,21 @@ local currentLightRadius = 180
 local targetLightRadius = 180
 local lightLerpSpeed = 5
 
-local glowEffect = moonshine(moonshine.effects.glow)
-glowEffect.glow.min_luma = 0.2
-glowEffect.glow.strength = 5
---glowEffect.glow.strength = 6
+-- Setup Moonshine pipeline: glow + multiply blend
+local glowPipeline = moonshine(moonshine.effects.glow)
+glowPipeline.glow.min_luma = 0.2
+glowPipeline.glow.strength = 1
+
+-- Canvas for lighting mask
+local lightMask = love.graphics.newCanvas()
+local lightMask      = love.graphics.newCanvas()
+local blurredMask    = love.graphics.newCanvas()
+
+local blurPipeline   = moonshine(moonshine.effects.gaussianblur)
+blurPipeline.gaussianblur.sigma = 50.0     -- edge softness (2-5 is typical)
 
 
+----------------------------------------------------------------
 local function setupWorld()
     world = love.physics.newWorld(0, 0)
     love.physics.setMeter(32)
@@ -51,26 +60,22 @@ local function setupWorld()
     )
 end
 
+----------------------------------------------------------------
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     setupWorld()
-
     Map.load(world, "assets/maps/map3.lua")
     Player.load(world)
 end
 
+----------------------------------------------------------------
 function love.update(dt)
     world:update(dt)
     Map.update(dt)
     Player.update(dt)
 
     currentLightRadius = currentLightRadius + (targetLightRadius - currentLightRadius) * math.min(lightLerpSpeed * dt, 1)
-
-    if Player.isMoving() then
-        targetLightRadius = 140
-    else
-        targetLightRadius = 180
-    end
+    if Player.isMoving() then targetLightRadius = 120 else targetLightRadius = 180 end
 
     if nextMap then
         setupWorld()
@@ -84,22 +89,21 @@ function love.update(dt)
     end
 end
 
+----------------------------------------------------------------
 function love.draw()
     local w, h = love.graphics.getDimensions()
     local scale = math.min(w / (Map.tiled.width * Map.tiled.tilewidth), h / (Map.tiled.height * Map.tiled.tileheight))
     local px, py = Player.getPosition()
     local screenX, screenY = px * scale, py * scale
 
-    glowEffect(function()
-        love.graphics.push()
-        love.graphics.scale(scale)
-        Map.drawLayer("Floor")
-        Map.drawLayer("Decoration")
-        Player.draw()
-        Map.drawLayer("Walls")
-        love.graphics.pop()
+    ------------------------------------------------
+    -- Step 1: Draw full black lighting mask
+    ------------------------------------------------
+    lightMask:renderTo(function()
+        love.graphics.clear(0, 0, 0, 1)
+        love.graphics.setBlendMode("add")
 
-        -- Torch glow effect
+        -- Torch glows
         for _, torch in ipairs(Map.getTorches()) do
             local time = love.timer.getTime()
             local flicker = math.sin(time * 3 + torch.x * 0.1) * 6
@@ -109,20 +113,51 @@ function love.draw()
             love.graphics.circle("fill", torch.x * scale, torch.y * scale, radius)
         end
 
-        -- Player light
+        -- Player glow (white)
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.circle("fill", screenX, screenY, currentLightRadius)
+
+        love.graphics.setBlendMode("alpha")
     end)
 
-    love.graphics.setColor(1, 1, 1, 1)
+    blurredMask:renderTo(function()
+        blurPipeline(function()
+            -- draw the *un-blurred* mask into the pipeline
+            love.graphics.draw(lightMask)
+        end)
+    end)
+
+
+    ------------------------------------------------
+    -- Step 2: Draw world into pipeline using lightMask
+    ------------------------------------------------
+    glowPipeline(function()
+        love.graphics.push()
+        love.graphics.scale(scale)
+        Map.drawLayer("Floor")
+        Map.drawLayer("Decoration")
+        Player.draw()
+        Map.drawLayer("Walls")
+        love.graphics.pop()
+    end)
+
+    -- Blend light mask over screen to cut darkness
+    love.graphics.setBlendMode("multiply", "premultiplied")
+    love.graphics.draw(blurredMask)
+    love.graphics.setBlendMode("alpha")
+
+    ------------------------------------------------
+    -- Step 3: HUD prompt
+    ------------------------------------------------
     if currentChangeData then
+        love.graphics.setColor(1,1,1,1)
         love.graphics.printf("Press E to enter " .. currentChangeData.map, 0, h - 30, w, "center")
     end
 end
 
+----------------------------------------------------------------
 function love.keypressed(key)
-    if key == "escape" then
-        love.event.quit()
+    if key == "escape" then love.event.quit()
     elseif key == "e" then
         if currentChangeData then
             nextMap = { path = "assets/maps/" .. currentChangeData.map .. ".lua", spawn = currentChangeData.spawn }

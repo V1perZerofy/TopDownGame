@@ -49,49 +49,49 @@
   <object id="12" x="72" y="40" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="21" x="168" y="40" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="22" x="264" y="40" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="23" x="72" y="232" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="24" x="360" y="40" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="25" x="168" y="232" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="26" x="360" y="232" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
   <object id="27" x="264" y="232" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
-    <property name="radius" type="int" value="275"/>
+    <property name="radius" type="int" value="150"/>
    </properties>
   </object>
  </objectgroup>

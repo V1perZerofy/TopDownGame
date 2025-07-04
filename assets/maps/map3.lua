@@ -184,7 +184,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -200,7 +200,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -216,7 +216,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -232,7 +232,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -248,7 +248,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -264,7 +264,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -280,7 +280,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         },
         {
@@ -296,7 +296,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "orange",
-            ["radius"] = 250
+            ["radius"] = 150
           }
         }
       }
