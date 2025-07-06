@@ -113,10 +113,10 @@ function love.draw()
             love.graphics.circle("fill", torch.x * scale, torch.y * scale, radius)
         end
 
-        -- Player glow (white)
+        -- Player glow (red)
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.circle("fill", screenX, screenY, currentLightRadius)
-
+        -- Only player should glow red torches still orange
         love.graphics.setBlendMode("alpha")
     end)
 
