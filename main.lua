@@ -1,4 +1,3 @@
-
 local Map    = require("map")
 local Player = require("player")
 local moonshine = require("libs.moonshine")
@@ -17,10 +16,10 @@ glowPipeline.glow.strength = 1
 
 -- Canvas for lighting mask
 local lightMask = love.graphics.newCanvas()
-local lightMask      = love.graphics.newCanvas()
-local blurredMask    = love.graphics.newCanvas()
+local blurredMask = love.graphics.newCanvas()
 
-local blurPipeline   = moonshine(moonshine.effects.gaussianblur)
+-- blur pipeline
+local blurPipeline = moonshine(moonshine.effects.gaussianblur)
 blurPipeline.gaussianblur.sigma = 50.0     -- edge softness (2-5 is typical)
 
 
@@ -96,13 +95,16 @@ function love.draw()
     local px, py = Player.getPosition()
     local screenX, screenY = px * scale, py * scale
 
-    ------------------------------------------------
-    -- Step 1: Draw full black lighting mask
-    ------------------------------------------------
+    -- Draw lighting mask at full resolution
     lightMask:renderTo(function()
         love.graphics.clear(0, 0, 0, 1)
         love.graphics.setBlendMode("add")
-
+        -- Player glow
+        -- Glow Orange
+        love.graphics.setColor(1.0, 0.6, 0.2, 1.0) -- orange glow for player
+        love.graphics.circle("fill", screenX, screenY, currentLightRadius)
+        love.graphics.setBlendMode("alpha")
+        love.graphics.setColor(1, 1, 1, 1)
         -- Torch glows
         for _, torch in ipairs(Map.getTorches()) do
             local time = love.timer.getTime()
@@ -111,18 +113,13 @@ function love.draw()
             local color = Map.getTorchColor(torch.color)
             love.graphics.setColor(color[1], color[2], color[3], 1.0)
             love.graphics.circle("fill", torch.x * scale, torch.y * scale, radius)
+            -- reset color for next draw
+            love.graphics.setColor(1, 1, 1, 1)
         end
-
-        -- Player glow (red)
-        love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.circle("fill", screenX, screenY, currentLightRadius)
-        -- Only player should glow red torches still orange
-        love.graphics.setBlendMode("alpha")
     end)
 
     blurredMask:renderTo(function()
         blurPipeline(function()
-            -- draw the *un-blurred* mask into the pipeline
             love.graphics.draw(lightMask)
         end)
     end)
@@ -143,6 +140,7 @@ function love.draw()
 
     -- Blend light mask over screen to cut darkness
     love.graphics.setBlendMode("multiply", "premultiplied")
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(blurredMask)
     love.graphics.setBlendMode("alpha")
 

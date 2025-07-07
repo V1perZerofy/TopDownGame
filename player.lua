@@ -148,6 +148,15 @@ function Player.update(dt)
     end
 end
 
+function Player.attack()
+    --trigger anim and add a hitbox
+    -- Key = "j"
+    if love.keyboard.isDown("j") then
+        
+    end
+end
+
+
 ----------------------------------------------------------------
 function Player.draw()
     local x, y = body:getPosition()

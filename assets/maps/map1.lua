@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.11.2",
+  tiledversion = "1.10.1",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 8,
-  nextobjectid = 33,
+  nextobjectid = 34,
   properties = {},
   tilesets = {
     {
@@ -754,7 +754,7 @@ return {
         0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 163, 0, 14, 0, 0,
         0, 164, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
         0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 10, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 10, 11, 0, 0, 164, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2147483812, 0,
         0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -786,7 +786,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
           }
         },
@@ -802,7 +802,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
           }
         },
@@ -818,8 +818,24 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
+          }
+        },
+        {
+          id = 33,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 256,
+          y = 128,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "white",
+            ["radius"] = 75
           }
         }
       }
