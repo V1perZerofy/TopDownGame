@@ -20,6 +20,7 @@ local currentFrame, frameTimer = 1, 0
 -- physics
 local body
 local moved = false  -- player moved this frame
+local attacked = false  -- player attacked this frame
 
 -- map transition flag
 local mapChangeTriggered = false
@@ -38,6 +39,8 @@ function Player.load(world)
     spriteRight      = love.graphics.newImage("assets/sprites/enemies.png")
     spriteIdleLeft   = love.graphics.newImage("assets/sprites/enemies_idle_l.png")
     spriteIdleRight  = love.graphics.newImage("assets/sprites/enemies_idle_r.png")
+    --spriteAttackLeft  = love.graphics.newImage("assets/sprites/enemies_attack_l.png")
+    --spriteAttackRight = love.graphics.newImage("assets/sprites/enemies_attack_r.png")
 
     -- cut frames
     for i = 0, FRAMES_TOTAL - 1 do
@@ -152,7 +155,8 @@ function Player.attack()
     --trigger anim and add a hitbox
     -- Key = "j"
     if love.keyboard.isDown("j") then
-        
+        attacked = true
+
     end
 end
 
