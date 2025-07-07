@@ -23,10 +23,10 @@
                 5
             ],
             "scale": 1.5,
-            "selectedLayer": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 695,
-                "y": 201.66666666666663
+                "x": 924.3333333333333,
+                "y": 230.33333333333334
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap.tmx#full tilemap": {
@@ -56,10 +56,10 @@
                 5
             ],
             "scale": 1.5,
-            "selectedLayer": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": -147.66666666666663,
-                "y": 200.99999999999997
+                "x": -247.66666666666663,
+                "y": 230.99999999999997
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx#FullTileset": {

@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 8,
-  nextobjectid = 28,
+  nextobjectid = 39,
   properties = {},
   tilesets = {
     {
@@ -93,11 +93,11 @@ return {
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 52, 44, 44, 44, 45, 53, 45, 54, 54, 44, 52, 52, 52, 45, 0,
-        0, 13, 32, 23, 12, 12, 21, 21, 24, 22, 21, 32, 23, 31, 32, 0,
-        43, 22, 32, 24, 12, 31, 32, 30, 22, 22, 31, 24, 30, 32, 30, 0,
-        12, 33, 30, 31, 32, 23, 31, 23, 31, 30, 23, 12, 30, 31, 22, 0,
-        0, 33, 32, 24, 22, 33, 31, 21, 32, 32, 22, 31, 30, 24, 32, 0,
-        0, 12, 13, 24, 31, 13, 13, 24, 24, 13, 30, 21, 12, 24, 13, 0,
+        0, 13, 32, 23, 12, 12, 43, 43, 44, 22, 21, 32, 23, 31, 32, 0,
+        43, 22, 32, 24, 12, 44, 16, 17, 18, 53, 43, 43, 44, 32, 30, 0,
+        12, 33, 30, 31, 32, 16, 34, 12, 36, 17, 17, 17, 18, 44, 22, 0,
+        0, 33, 32, 24, 22, 12, 12, 12, 12, 12, 12, 12, 36, 17, 32, 0,
+        0, 12, 13, 24, 31, 44, 44, 52, 52, 53, 45, 54, 52, 43, 13, 0,
         0, 24, 12, 33, 32, 32, 22, 22, 32, 22, 13, 21, 30, 22, 13, 0
       }
     },
@@ -120,13 +120,13 @@ return {
       encoding = "lua",
       data = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 163, 0, 0, 163, 0, 0, 163, 0, 0, 163, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 163, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 2147483812, 0, 0, 0, 0, 0, 163, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 163, 0, 0, 163, 0, 0, 163, 0, 0, 163, 0, 0, 0, 0
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -148,11 +148,11 @@ return {
       encoding = "lua",
       data = {
         41, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 40,
-        50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
-        69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
-        60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
-        50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
+        50, 0, 0, 0, 0, 0, 66, 66, 66, 0, 0, 0, 0, 0, 0, 49,
+        69, 0, 0, 0, 0, 66, 49, 0, 50, 66, 66, 66, 66, 0, 0, 49,
+        0, 0, 0, 0, 0, 49, 0, 0, 0, 0, 0, 0, 50, 66, 0, 49,
+        60, 0, 0, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 50, 0, 49,
+        50, 0, 0, 0, 0, 66, 66, 66, 66, 66, 66, 66, 66, 69, 0, 49,
         50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49,
         59, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 58
       }
@@ -176,14 +176,14 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 72,
-          y = 40,
+          x = 328,
+          y = 104,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
           }
         },
@@ -192,30 +192,14 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 168,
-          y = 40,
+          x = 144,
+          y = 104,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
-            ["radius"] = 150
-          }
-        },
-        {
-          id = 22,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 264,
-          y = 40,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
           }
         },
@@ -224,78 +208,14 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 72,
-          y = 232,
+          x = 232,
+          y = 72,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "orange",
-            ["radius"] = 150
-          }
-        },
-        {
-          id = 24,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 360,
-          y = 40,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "orange",
-            ["radius"] = 150
-          }
-        },
-        {
-          id = 25,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 168,
-          y = 232,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "orange",
-            ["radius"] = 150
-          }
-        },
-        {
-          id = 26,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 360,
-          y = 232,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "orange",
-            ["radius"] = 150
-          }
-        },
-        {
-          id = 27,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 264,
-          y = 232,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "orange",
+            ["color"] = "white",
             ["radius"] = 150
           }
         }
@@ -417,6 +337,136 @@ return {
           y = 48,
           width = 8,
           height = 200,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 28,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 96,
+          width = 32,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 30,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 64,
+          width = 96,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 31,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 80,
+          width = 8,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 32,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 280,
+          y = 80,
+          width = 8,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 33,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 288,
+          y = 96,
+          width = 128,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 34,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 408,
+          y = 112,
+          width = 8,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 35,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 416,
+          y = 128,
+          width = 32,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 36,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 440,
+          y = 144,
+          width = 8,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 37,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 192,
+          width = 288,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 38,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 112,
+          width = 8,
+          height = 48,
           rotation = 0,
           visible = true,
           properties = {}

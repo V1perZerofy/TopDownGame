@@ -49,6 +49,14 @@ function Map.drawLayer(name)
     end
 end
 
+function Map.debugDraw()
+    love.graphics.setColor(0, 1, 0, 1)  -- semi-transparent red for debug
+    if Map.tiled then
+        Map.tiled:box2d_draw()
+    end
+    love.graphics.setColor(1, 1, 1)  -- reset color
+end
+
 function Map.update(dt)
     if Map.tiled then Map.tiled:update(dt) end
 end

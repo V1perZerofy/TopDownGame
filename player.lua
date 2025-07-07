@@ -5,13 +5,14 @@ local FRAME_W, FRAME_H     = 64, 64
 local FRAME_TIME           = 0.08
 local FRAMES_TOTAL         = 10 -- walking
 local IDLE_FRAMES_TOTAL    = 6  -- idle
+local ATTACK_FRAMES_TOTAL  = 15
 local facing               = 1  -- 0 = left, 1 = right
 local currentIdle;
 local currentIdleQuads;
 
 -- assets
-local spriteLeft, spriteRight, spriteIdleLeft, spriteIdleRight
-local quadsLeft, quadsRight, quadsIdleLeft, quadsIdleRight = {}, {}, {}, {}
+local spriteLeft, spriteRight, spriteIdleLeft, spriteIdleRight, spriteAttackLeft, spriteAttackRight
+local quadsLeft, quadsRight, quadsIdleLeft, quadsIdleRight, quadsAttackLeft, quadsAttackRight = {}, {}, {}, {}, {}, {}
 
 -- animation state
 local currentSprite, currentQuads
@@ -39,8 +40,8 @@ function Player.load(world)
     spriteRight      = love.graphics.newImage("assets/sprites/enemies.png")
     spriteIdleLeft   = love.graphics.newImage("assets/sprites/enemies_idle_l.png")
     spriteIdleRight  = love.graphics.newImage("assets/sprites/enemies_idle_r.png")
-    --spriteAttackLeft  = love.graphics.newImage("assets/sprites/enemies_attack_l.png")
-    --spriteAttackRight = love.graphics.newImage("assets/sprites/enemies_attack_r.png")
+    spriteAttackLeft  = love.graphics.newImage("assets/sprites/enemies_attack_l.png")
+    spriteAttackRight = love.graphics.newImage("assets/sprites/enemies_attack_r.png")
 
     -- cut frames
     for i = 0, FRAMES_TOTAL - 1 do
@@ -50,6 +51,10 @@ function Player.load(world)
     for i = 0, IDLE_FRAMES_TOTAL - 1 do
         quadsIdleLeft[i + 1]  = love.graphics.newQuad(i * FRAME_W, 14, FRAME_W, FRAME_H, spriteIdleLeft:getDimensions())
         quadsIdleRight[i + 1] = love.graphics.newQuad(i * FRAME_W, 14, FRAME_W, FRAME_H, spriteIdleRight:getDimensions())
+    end
+    for i = 0, ATTACK_FRAMES_TOTAL - 1 do
+        quadsAttackLeft[i + 1] = love.graphics.newQuad(i * FRAME_W, 14, FRAME_W, FRAME_H, spriteAttackLeft:getDimensions())
+        quadsAttackRight[i + 1] = love.graphics.newQuad(i * FRAME_W, 14, FRAME_W, FRAME_H, spriteAttackRight:getDimensions())
     end
 
     -- default facing
@@ -72,22 +77,27 @@ function Player.update(dt)
     local vx, vy = 0, 0
     moved = false
 
-    if love.keyboard.isDown("w") then
+    if love.keyboard.isDown("w") and not attacked then
         vy = vy - 1
         facing = 2  -- up
     end
-    if love.keyboard.isDown("s") then
+    if love.keyboard.isDown("s") and not attacked then
         vy = vy + 1
         facing = 3  -- down
     end
-    if love.keyboard.isDown("a") then
+    if love.keyboard.isDown("a") and not attacked then
         vx = vx - 1
         facing = 0
     end
-    if love.keyboard.isDown("d") then
+    if love.keyboard.isDown("d") and not attacked then
         vx = vx + 1
         facing = 1
     end
+    if love.keyboard.isDown("j") and not attacked then
+        attacked = true
+        currentFrame = 1  -- reset to first frame of attack animation
+    end
+
     if vx ~= 0 or vy ~= 0 then
         moved = true
     end
@@ -102,7 +112,7 @@ function Player.update(dt)
 
     -- animation update
     frameTimer = frameTimer + dt
-    if moved then
+    if moved and not attacked then
         if facing == 0 then
             currentSprite = spriteLeft
             currentQuads = quadsLeft
@@ -124,6 +134,33 @@ function Player.update(dt)
         if frameTimer >= FRAME_TIME then
             frameTimer = frameTimer - FRAME_TIME
             currentFrame = currentFrame % FRAMES_TOTAL + 1
+        end
+    elseif attacked then
+        if facing == 0 then
+            currentSprite = spriteAttackLeft
+            currentQuads = quadsAttackLeft
+        end
+        if facing == 1 then
+            currentSprite = spriteAttackRight
+            currentQuads = quadsAttackRight
+        end
+        if facing == 2 then
+            currentSprite = spriteAttackLeft
+            currentQuads = quadsAttackLeft
+        end
+        if facing == 3 then
+            currentSprite = spriteAttackRight
+            currentQuads = quadsAttackRight
+        end
+        if currentFrame > ATTACK_FRAMES_TOTAL then
+            currentFrame = 1
+        end
+        if frameTimer >= FRAME_TIME then
+            frameTimer = frameTimer - FRAME_TIME
+            currentFrame = currentFrame % ATTACK_FRAMES_TOTAL + 1
+            if currentFrame == 1 then
+                attacked = false  -- reset attack state after the last frame
+            end
         end
     else
         if facing == 0 then
@@ -148,15 +185,6 @@ function Player.update(dt)
             frameTimer = frameTimer - FRAME_TIME
             currentFrame = currentFrame % IDLE_FRAMES_TOTAL + 1
         end
-    end
-end
-
-function Player.attack()
-    --trigger anim and add a hitbox
-    -- Key = "j"
-    if love.keyboard.isDown("j") then
-        attacked = true
-
     end
 end
 
