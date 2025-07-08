@@ -184,7 +184,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 75
           }
         },
         {
@@ -200,7 +200,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 75
           }
         },
         {
@@ -216,7 +216,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 75
           }
         }
       }

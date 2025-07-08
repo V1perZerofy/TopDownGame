@@ -141,25 +141,25 @@
   <object id="29" x="360" y="40" width="16" height="16">
    <properties>
     <property name="color" value="white"/>
-    <property name="radius" type="int" value="150"/>
+    <property name="radius" type="int" value="60"/>
    </properties>
   </object>
   <object id="30" x="32" y="64" width="16" height="16">
    <properties>
     <property name="color" value="white"/>
-    <property name="radius" type="int" value="150"/>
+    <property name="radius" type="int" value="60"/>
    </properties>
   </object>
   <object id="31" x="464" y="160" width="16" height="16">
    <properties>
     <property name="color" value="white"/>
-    <property name="radius" type="int" value="150"/>
+    <property name="radius" type="int" value="60"/>
    </properties>
   </object>
   <object id="33" x="256" y="128" width="16" height="16">
    <properties>
     <property name="color" value="white"/>
-    <property name="radius" type="int" value="75"/>
+    <property name="radius" type="int" value="60"/>
    </properties>
   </object>
  </objectgroup>

@@ -787,7 +787,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 60
           }
         },
         {
@@ -803,7 +803,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 60
           }
         },
         {
@@ -819,7 +819,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 150
+            ["radius"] = 60
           }
         },
         {
@@ -835,7 +835,7 @@ return {
           visible = true,
           properties = {
             ["color"] = "white",
-            ["radius"] = 75
+            ["radius"] = 60
           }
         }
       }

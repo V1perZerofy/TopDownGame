@@ -56,10 +56,10 @@
                 5
             ],
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": -247.66666666666663,
-                "y": 230.99999999999997
+                "x": 261,
+                "y": 132.33333333333331
             }
         },
         "C:/Users/niels/Documents/GitKraken/TopDownGame/assets/maps/dungeonMap3.tmx#FullTileset": {
