@@ -1,6 +1,10 @@
+-- main.lua
 local Map    = require("map")
 local Player = require("player")
-local moonshine = require("libs.moonshine")
+
+-- Shader
+local radialShader = love.graphics.newShader("shaders/radial_light.glsl")
+local blurShader   = love.graphics.newShader("shaders/gaussian_blur.glsl")
 
 local world
 local nextMap, currentChangeData
@@ -9,19 +13,10 @@ local currentLightRadius = 180
 local targetLightRadius = 180
 local lightLerpSpeed = 5
 
--- Setup Moonshine pipeline: glow + multiply blend
-local glowPipeline = moonshine(moonshine.effects.glow)
-glowPipeline.glow.min_luma = 0.2
-glowPipeline.glow.strength = 1
-
--- Canvas for lighting mask
-local lightMask = love.graphics.newCanvas()
+-- Canvas for lighting mask + blur intermediate
+local lightMask   = love.graphics.newCanvas()
+local blurTemp    = love.graphics.newCanvas()
 local blurredMask = love.graphics.newCanvas()
-
--- blur pipeline
-local blurPipeline = moonshine(moonshine.effects.gaussianblur)
-blurPipeline.gaussianblur.sigma = 50.0     -- edge softness (2-5 is typical)
-
 
 ----------------------------------------------------------------
 local function setupWorld()
@@ -73,9 +68,11 @@ function love.update(dt)
     Map.update(dt)
     Player.update(dt)
 
+    -- weicher Licht-Radius-Übergang
     currentLightRadius = currentLightRadius + (targetLightRadius - currentLightRadius) * math.min(lightLerpSpeed * dt, 1)
-    if Player.isMoving() then targetLightRadius = 120 else targetLightRadius = 180 end
+    targetLightRadius = Player.isMoving() and 120 or 180
 
+    -- Mapwechsel durchführen
     if nextMap then
         setupWorld()
         Map.load(world, nextMap.path)
@@ -91,65 +88,68 @@ end
 ----------------------------------------------------------------
 function love.draw()
     local w, h = love.graphics.getDimensions()
-    local scale = math.min(w / (Map.tiled.width * Map.tiled.tilewidth), h / (Map.tiled.height * Map.tiled.tileheight))
+    local scale = math.min(
+        w / (Map.tiled.width  * Map.tiled.tilewidth),
+        h / (Map.tiled.height * Map.tiled.tileheight)
+    )
     local px, py = Player.getPosition()
     local screenX, screenY = px * scale, py * scale
 
-    -- Draw lighting mask at full resolution
+    -- 1) Lichtmaske rendern mit radialShader
     lightMask:renderTo(function()
         love.graphics.clear(0, 0, 0, 1)
-        love.graphics.setBlendMode("add")
-        -- Player glow
-        -- Glow Orange
-        love.graphics.setColor(1.0, 0.6, 0.2, 1.0) -- orange glow for player
-        love.graphics.circle("fill", screenX, screenY, currentLightRadius)
-        love.graphics.setBlendMode("alpha")
-        love.graphics.setColor(1, 1, 1, 1)
-        -- Torch glows
+        love.graphics.setShader(radialShader)
+        -- Spieler-Licht
+        radialShader:send("lightPos", {screenX, screenY})
+        radialShader:send("radius", currentLightRadius)
+        radialShader:send("lightColor", {1.0, 0.6, 0.2})  -- Weißes Licht
+        love.graphics.rectangle("fill", 0, 0, w, h)
+        -- Fackeln
         for _, torch in ipairs(Map.getTorches()) do
-            local time = love.timer.getTime()
-            local flicker = math.sin(time * 3 + torch.x * 0.1) * 6
-            local radius = torch.radius + flicker
-            local color = Map.getTorchColor(torch.color)
-            love.graphics.setColor(color[1], color[2], color[3], 1.0)
-            love.graphics.circle("fill", torch.x * scale, torch.y * scale, radius)
-            -- reset color for next draw
-            love.graphics.setColor(1, 1, 1, 1)
+            local tx, ty = torch.x * scale, torch.y * scale
+            radialShader:send("lightPos", {tx, ty})
+            radialShader:send("radius", torch.radius)
+            radialShader:send("lightColor", {1,1,1,1})  -- Fackel-Farbe
+            love.graphics.rectangle("fill", 0, 0, w, h)
         end
+        love.graphics.setShader()
     end)
 
+    -- 2) Separable Gaussian-Blur: horizontal
+    blurShader:send("blurRadius", 25)  -- Größe des Blurs
+    blurTemp:renderTo(function()
+        love.graphics.setShader(blurShader)
+        blurShader:send("direction", {1, 0})
+        love.graphics.draw(lightMask)
+        love.graphics.setShader()
+    end)
+    -- vertical
+    blurShader:send("blurRadius", 25)  -- Größe des Blurs
     blurredMask:renderTo(function()
-        blurPipeline(function()
-            love.graphics.draw(lightMask)
-        end)
+        love.graphics.setShader(blurShader)
+        blurShader:send("direction", {0, 1})
+        love.graphics.draw(blurTemp)
+        love.graphics.setShader()
     end)
 
+    -- 3) Szene normal zeichnen
+    love.graphics.push()
+    love.graphics.scale(scale)
+    Map.drawLayer("Floor")
+    Map.drawLayer("Decoration")
+    Player.draw()
+    Map.drawLayer("Walls")
+    Player.debugDraw()
+    Map.debugDraw()
+    love.graphics.pop()
 
-    ------------------------------------------------
-    -- Step 2: Draw world into pipeline using lightMask
-    ------------------------------------------------
-    glowPipeline(function()
-        love.graphics.push()
-        love.graphics.scale(scale)
-        Map.drawLayer("Floor")
-        Map.drawLayer("Decoration")
-        Player.draw()
-        Map.drawLayer("Walls")
-        love.graphics.setColor(1, 1, 1, 1)
-        Player.debugDraw()
-        Map.debugDraw()
-        love.graphics.pop()
-    end)
-
-    -- Blend light mask over screen to cut darkness
+    -- 4) Lichtmaske multiplizieren
     love.graphics.setBlendMode("multiply", "premultiplied")
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(blurredMask)
     love.graphics.setBlendMode("alpha")
 
-    ------------------------------------------------
-    -- Step 3: HUD prompt
-    ------------------------------------------------
+    -- HUD-Prompt für Map-Change
     if currentChangeData then
         love.graphics.setColor(1,1,1,1)
         love.graphics.printf("Press E to enter " .. currentChangeData.map, 0, h - 30, w, "center")
@@ -158,11 +158,10 @@ end
 
 ----------------------------------------------------------------
 function love.keypressed(key)
-    if key == "escape" then love.event.quit()
-    elseif key == "e" then
-        if currentChangeData then
-            nextMap = { path = "assets/maps/" .. currentChangeData.map .. ".lua", spawn = currentChangeData.spawn }
-            currentChangeData = nil
-        end
+    if key == "escape" then
+        love.event.quit()
+    elseif key == "e" and currentChangeData then
+        nextMap = { path = "assets/maps/" .. currentChangeData.map .. ".lua", spawn = currentChangeData.spawn }
+        currentChangeData = nil
     end
 end
