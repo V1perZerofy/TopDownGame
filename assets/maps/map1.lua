@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.10.1",
+  tiledversion = "1.11.2",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -786,8 +786,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "white",
-            ["radius"] = 60
+            ["color"] = "yellow",
+            ["radius"] = 120
           }
         },
         {
@@ -802,8 +802,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "white",
-            ["radius"] = 60
+            ["color"] = "yellow",
+            ["radius"] = 120
           }
         },
         {
@@ -818,8 +818,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "white",
-            ["radius"] = 60
+            ["color"] = "yellow",
+            ["radius"] = 120
           }
         },
         {
@@ -834,8 +834,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "white",
-            ["radius"] = 60
+            ["color"] = "yellow",
+            ["radius"] = 120
           }
         }
       }

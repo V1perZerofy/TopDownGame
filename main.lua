@@ -70,7 +70,7 @@ function love.update(dt)
 
     -- weicher Licht-Radius-Übergang
     currentLightRadius = currentLightRadius + (targetLightRadius - currentLightRadius) * math.min(lightLerpSpeed * dt, 1)
-    targetLightRadius = Player.isMoving() and 120 or 180
+    targetLightRadius = Player.isMoving() and 180 or 240
 
     -- Mapwechsel durchführen
     if nextMap then
@@ -102,21 +102,21 @@ function love.draw()
         -- Spieler-Licht
         radialShader:send("lightPos", {screenX, screenY})
         radialShader:send("radius", currentLightRadius)
-        radialShader:send("lightColor", {1.0, 0.6, 0.2})  -- Weißes Licht
+        radialShader:send("lightColor", {1.0, 0.6, 0.2, 1})
         love.graphics.rectangle("fill", 0, 0, w, h)
         -- Fackeln
         for _, torch in ipairs(Map.getTorches()) do
             local tx, ty = torch.x * scale, torch.y * scale
             radialShader:send("lightPos", {tx, ty})
             radialShader:send("radius", torch.radius)
-            radialShader:send("lightColor", {1,1,1,1})  -- Fackel-Farbe
+            radialShader:send("lightColor", Map.getTorchColor(torch.color) or {1.0, 0.6, 0.2})  -- Standard orange
             love.graphics.rectangle("fill", 0, 0, w, h)
         end
         love.graphics.setShader()
     end)
 
     -- 2) Separable Gaussian-Blur: horizontal
-    blurShader:send("blurRadius", 25)  -- Größe des Blurs
+    blurShader:send("blurRadius", 40)  -- Größe des Blurs
     blurTemp:renderTo(function()
         love.graphics.setShader(blurShader)
         blurShader:send("direction", {1, 0})
@@ -124,7 +124,7 @@ function love.draw()
         love.graphics.setShader()
     end)
     -- vertical
-    blurShader:send("blurRadius", 25)  -- Größe des Blurs
+    blurShader:send("blurRadius", 40)  -- Größe des Blurs
     blurredMask:renderTo(function()
         love.graphics.setShader(blurShader)
         blurShader:send("direction", {0, 1})
@@ -139,8 +139,8 @@ function love.draw()
     Map.drawLayer("Decoration")
     Player.draw()
     Map.drawLayer("Walls")
-    Player.debugDraw()
-    Map.debugDraw()
+    --Player.debugDraw()
+    --Map.debugDraw()
     love.graphics.pop()
 
     -- 4) Lichtmaske multiplizieren
